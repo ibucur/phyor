@@ -25,6 +25,53 @@
     "https"
   ],
   "paths": {
+    "/products": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "get all the products",
+        "description": "",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "query",
+            "description": "specifies the category the products get listed",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "description": "specifies the number of the page the products get listed",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "resultsPerPage",
+            "in": "query",
+            "description": "specifies the number of products that gets listed in the response",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "All OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/Product"
+              }
+            }
+          }
+        }
+      }
+    },
     "/products/{productId}/{outputFormat}": {
       "get": {
         "tags": [
