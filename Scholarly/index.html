@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Phyor ((Physical Object Recommender)</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/prism-coy.css">
+    <script src="scripts/prism.js" defer="defer"></script>
+  </head>
+  <body prefix="schema: http://schema.org/ xsd: http://www.w3.org/2001/XMLSchema# sa: https://ns.science.ai/">
+    <header>
+      <p class="title">Phyor</p>
+      <p class="subtitle">(Physical Object Recommender)</p>
+    </header>
+    <article id="what" typeof="schema:ScholarlyArticle" resource="#">
+      <h1>Phyor ((Physical Object Recommender))</h1>
+      <section>
+        <ol>
+          <li property="schema:author" typeof="sa:ContributorRole">
+            <a property="schema:author" href="https://www.linkedin.com/in/bucuririnel" typeof="schema:Person">
+              <span property="schema:givenName">Ion-Irinel</span>
+              <span property="schema:familyName">Bucur</span>
+            </a>
+          </li>
+          <li property="schema:contributor" typeof="sa:ContributorRole">
+            <a property="schema:contributor" href="https://www.linkedin.com/in/anca-ramona-bantu-06a52aa7" typeof="schema:Person">
+              <span property="schema:givenName">Anca-Ramona</span>
+              <span property="schema:familyName">Bantu</span>
+            </a>
+          </li>
+        </ol>
+        <ol>
+          <li id="fiiInfo">
+            <a href="http://www.info.uaic.ro/" typeof="schema:Corporation">
+              <span property="schema:name">Facultatea de Informatica</span>
+            </a>
+          </li>
+        </ol>
+      </section>
+
+      <section typeof="sa:Abstract" id="abstract">
+        <h2>Abstract</h2>
+        <p>
+            Phyor (Physical Object Recommender) is a multi-platform application able to identify various (categories of)
+            physical objects using its numerical symbol in order to recommend alternatives of interest for a specific user.
+        </p>
+        <p>
+            These recommendations could depend on many factors: availability in other formats (an ePub version of a printed book,
+            the Blu-ray edition instead of DVD), language (i.e. different translations of a given work), price (for example,
+            only expensive luxury products), quality (new vs. used, CD vs. SACD), similarity (other LP of a musical group),
+            user preferences (only bottles and cans having a specific shape/color, food without preservatives and meat).
+        </p>
+        <p>
+        	The Front-end application implements 2 new features: support for actions like sharing a recommended object
+        	on a popular social network (Facebook OWL data has been included in the HTML generated product page)
+        	or saving the URL which consists in saving the page in HTML Format on a local device.
+        	<br />
+        	All significant information is accessed by using a SPARQL endpoint.
+
+        </p>
+      </section>
+      <section typeof="sa:MaterialsAndMethods" id="Introduction">
+        <h2>Introduction</h2>
+        <p>
+            Phyor (Physical Object Recommender) is a multi-platform application able to identify various (categories of)
+            physical objects using its numerical symbol in order to recommend alternatives of interest for a specific user.
+            <br />
+            The application base inputs are the knowledge base (Wikidata) and various third party APIs for the general products information.
+        </p>
+        <p>
+            Users are able to navigate to a specific product based on categories and then see a product page.
+            The format can be specified and it can vary from HTML, JSON-LD, RDF, e.g. and is considered the product page.
+            <br />
+            It will contain as well details about various similar products or versions of the current product including the
+            link to the similar/recommended product.
+        </p>
+        <p>
+            As mentioned prior, each product page can be presented in various ways. The default one is HTML and
+            it includes the Facebook OWL data in order to allow the social network to properly read and display the data
+            when a link is included in their network.
+            <br />
+            Option to save the page on the local device is also available.
+        </p>
+      </section>
+      <section typeof="sa:MaterialsAndMethods" id="mainArchitecture">
+        <h2>Application Architecture</h2>
+        <p>
+            The high level software architecture for the Phyor (Physical Object Recommender) application is described below.
+        </p>
+        <p>
+        	The backend of the Phyor (Physical Object Recommender) application is composed of several modules, each with a well-defined purpose.
+        	For example, the 3rd party products retriever module is responsible only for fetching the latest update for a product.
+			<br />
+			Another module is the products which exposes api enpoints and calls the sparql service in order to generate the response for the requested product id.
+        </p>
+		<p>
+			The sparql service endpoint gets the product data by calling the 3rd party product retriever module.
+		</p>
+		<p>
+			The categories module manages the categories of products in order to be able to locally group the products.
+		</p>
+		<p>
+			The router manager module is responsible to properly load the correct controller class able to satisfy the request. It is not designed in the diagram but this module controls the output format as well.
+		</p>
+		<p>
+		    The Phyor (Physical Object Recommender) application's hight level software architecture is highlighted in the following diagram.
+		    <img src="images/Phyor SOA.png" width="1234" height="776">
+         </p>
+		<p>
+			The OpenAPI specification for the Phyor (Physical Object Recommender) application can be found here:
+        	<ul>
+				<li><a href="../OpenApi/swagger.json"> JSON Format </a>
+				<li><a href="../OpenApi/swagger.yaml"> YAML Format </a>
+        	</ul>
+		</p>
+      </section>
+     <section typeof="sa:MaterialsAndMethods" id="mainFlow">
+         <h2>Main flow</h2>
+         <p>
+         	To begin with, the end user will first make a http get call to the <code>/categories</code> endpoint which will display the possible categories of the products.
+
+			Also, he can use post method in order to upload a new category. For the moment, the route is not protected for unauthorized access but can easily be protected based on the source ip.
+         </p>
+         <p>
+            The user can check a specific product in order to get it's details by useing <code>/products/{productId}/{outputFormat}</code> route.
+            The productId is the unique product identification number and the output format is one of html, json, rdf.
+			However, if the user wants to receive only the product similarities, another sub-route is available by calling using the http get method the endpoint:
+			<code>/products/{productId}/similar/{outputFormat}</code> endpoint, the end user is presented with the latest trending news about the first 100 most popular cryptocurrencies.
+         </p>
+         <p>
+         	A note should be specified in order to know that the HTML version of a result includes the Facebook OWL data in order to properly be shown on the social network.
+         </p>
+     </section>
+      <section typeof="sa:Conclusion" id="conclusion">
+        <h2>Conclusion</h2>
+        <p>
+        	Phyor (Physical Object Recommender) is dependable of the wikidata information about the products in order to be able to show the similarities.
+        </p>
+		<p>
+        	Even though the information which can be found on DBpedia and other websites can suffice
+        	as far as managing one's products goes, it is not tailored to satisfy everyone's needs. Phyor also provides various
+			details about a specific product and also some fairly similar alternatives about it.
+        </p>
+		<p>
+			It can be further extended by adding functionalities to include OWL data for other social networks (instagram, twitter) in order to make it share-friendly on other networks.
+        </p>
+      </section>
+    </article>
+
+</body></html>
