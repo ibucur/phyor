@@ -10,7 +10,7 @@ export class CurrencyRepository {
         return getRepository(Currency).save(data);
     }
 
-    private static fillOneResourceURI(data: Currency|any):Currency|any {
+    public static fillOneResourceURI(data: Currency|any):Currency|any {
         data["resourceUri"] = process.env.HOST + '/api/currencies/'+data["id"];
         return data;
     }

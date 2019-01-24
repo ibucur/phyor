@@ -10,7 +10,7 @@ export class AuthorRepository {
         return getRepository(Autor).save(data);
     }
 
-    private static fillOneAuthorURI(data: Autor|any):Autor|any {
+    public static fillOneAuthorURI(data: Autor|any):Autor|any {
         data["resourceUri"] = process.env.HOST + '/api/authors/'+data["id"];
         return data;
     }

@@ -13,6 +13,7 @@ import {ErrorCodes} from "../../constants/errorCodes";
 import {isNullOrUndefined} from "util";
 import {BookRepository} from "./bookRepository";
 import {Book} from "../../entities/books";
+import {PublisherRepository} from "../publishers/publisherRepository";
 
 @Service()
 @JsonController()
@@ -31,9 +32,10 @@ export class BookController {
     ): Promise<Book> {
         return BookRepository.findBooksByAuthorId(authorId, pageNumber, resultsPerPage)
             .then(
-                (data) => {
-                    if (data.length > 0)
+                 (data) => {
+                    if (data.length > 0) {
                         return Promise.resolve(data);
+                    }
                     else
                         return Promise.reject();
                 })

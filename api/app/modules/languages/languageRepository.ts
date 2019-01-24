@@ -10,7 +10,7 @@ export class LanguageRepository {
         return getRepository(Language).save(data);
     }
 
-    private static fillOneResourceURI(data: Language|any):Language|any {
+    public static fillOneResourceURI(data: Language|any):Language|any {
         data["resourceUri"] = process.env.HOST + '/api/languages/'+data["id"];
         return data;
     }

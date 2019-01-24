@@ -1,6 +1,12 @@
 import {Service} from "typedi";
 import {getRepository} from "typeorm";
 import {Book} from "../../entities/books";
+import {PublisherRepository} from "../publishers/publisherRepository";
+import * as util from "util";
+import {AuthorRepository} from "../autors/authorRepository";
+import {CurrencyRepository} from "../currencies/currencyRepository";
+import {GenreRepository} from "../genres/genreRepository";
+import {LanguageRepository} from "../languages/languageRepository";
 
 @Service()
 export class BookRepository {
@@ -12,12 +18,18 @@ export class BookRepository {
 
     private static fillOneResourceURI(data: Book|any):Book|any {
         data["resourceUri"] = process.env.HOST + '/api/books/'+data["id"];
+        data.publisher = PublisherRepository.fillOneResourceURI(data.publisher);
+        data.currency = CurrencyRepository.fillOneResourceURI(data.currency);
+        data.genre = GenreRepository.fillOneResourceURI(data.genre);
+        data.language = LanguageRepository.fillOneResourceURI(data.language);
+        data.author = AuthorRepository.fillOneAuthorURI(data.author);
         return data;
     }
 
     private static fillResourceURI(data: Book[] | any): Book[] | any {
         for (let i = 0; i < data.length; i++) {
             data[i] = this.fillOneResourceURI(data[i]);
+
         }
         return data;
     }
@@ -50,7 +62,10 @@ export class BookRepository {
             take: resultsPerPage
         })
             .then((data) => {
-                return Promise.resolve(this.fillResourceURI(data));
+                if (data.length >= 0) {
+                    return Promise.resolve(this.fillResourceURI(data));
+                }
+                else Promise.reject();
             })
             .catch((err) => {
                 return Promise.reject(err);

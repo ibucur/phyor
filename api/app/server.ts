@@ -49,8 +49,8 @@ createConnection({
     ],
     synchronize: false,
     dropSchema: false,
-    logging: ["query", "error"],
-    //logging: ["error"],
+    //logging: ["query", "error"],
+    logging: ["error"],
 }).catch(error => {
     console.error('Error on connecting to the database!' + util.inspect(error));
     process.exit();

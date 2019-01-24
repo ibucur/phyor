@@ -10,12 +10,12 @@ export class PublisherRepository {
         return getRepository(Publisher).save(data);
     }
 
-    private static fillOneResourceURI(data: Publisher|any):Publisher|any {
+    public static fillOneResourceURI(data: Publisher|any):Publisher|any {
         data["resourceUri"] = process.env.HOST + '/api/publishers/'+data["id"];
         return data;
     }
 
-    private static fillResourceURI(data: Publisher[] | any): Publisher[] | any {
+    public static fillResourceURI(data: Publisher[] | any): Publisher[] | any {
         for (let i = 0; i < data.length; i++) {
             data[i] = this.fillOneResourceURI(data[i]);
         }

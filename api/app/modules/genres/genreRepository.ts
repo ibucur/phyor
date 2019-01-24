@@ -10,7 +10,7 @@ export class GenreRepository {
         return getRepository(Genre).save(data);
     }
 
-    private static fillOneResourceURI(data: Genre|any):Genre|any {
+    public static fillOneResourceURI(data: Genre|any):Genre|any {
         data["resourceUri"] = process.env.HOST + '/api/genres/'+data["id"];
         return data;
     }
