@@ -12,6 +12,11 @@ export class LanguageRepository {
 
     public static fillOneResourceURI(data: Language|any):Language|any {
         data["resourceUri"] = process.env.HOST + '/api/languages/'+data["id"];
+        data["="] = "language";
+        data["@1"] = {
+            "id": data.id
+        };
+        delete data.id;
         return data;
     }
 

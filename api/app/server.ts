@@ -31,6 +31,10 @@ import {GenreController} from "./modules/genres/genreController";
 import {LanguageController} from "./modules/languages/languageController";
 import {PublisherController} from "./modules/publishers/publisherController";
 import {BookController} from "./modules/books/bookController";
+import {isNullOrUndefined} from "util";
+import {UserController} from "./modules/users/userController";
+import {User} from "./entities/users";
+import {UserTokenDecodeMiddleware} from "./modules/users/userTokenDecodeMiddleware";
 
 /**
  * Setup routing-controllers to use typedi container.
@@ -45,7 +49,7 @@ createConnection({
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
     entities: [
-        Autor, Book, Currency, Genre, Language, Publisher
+        Autor, Book, Currency, Genre, Language, Publisher, User
     ],
     synchronize: false,
     dropSchema: false,
@@ -67,19 +71,53 @@ app.use(bodyParser.json({limit: '20mb'}));
 app.use(bodyParser.urlencoded({limit: '20mb', extended: true}));
 useExpressServer( app,
     {
-        authorizationChecker: (action: Action, role: any) => {
-            return Promise.resolve(true);
+        authorizationChecker: async (action: Action, role: any) => {
+            //console.log("ACTION RECEIVED" + util.inspect(action.request));
+            //if (!isNullOrUndefined(action.request.user)) console.log("REQUEST->USER: "+util.inspect(action.request.user))
+            if (isNullOrUndefined(action.request.headers["authorization"]) && !isNullOrUndefined(action.request.query.authorization)) {
+                action.request.headers["authorization"] = action.request.query.authorization;
+            }
+
+
+            if (action.request.headers["authorization"] && !action.request.user) {
+                UserController.getUserFromToken(action.request, action.request.headers["authorization"])
+                    .then( (validation) => {
+                        if (validation === -1) {
+                            throw {error: ErrorCodes.failedToAuthenticateToken, details: {token: action.request.headers["authorization"]}};
+                        }
+                        else if (validation === -2) {
+                            throw {error: ErrorCodes.authenticationTokenExpired, details: {token: action.request.headers["authorization"]}};
+                        }
+                        else if (validation < 0) {
+                            throw {error: ErrorCodes.unauthorizedAccess, details: {token: action.request.headers["authorization"]}};
+                        }
+                        //console.log('got here');
+                    })
+                    .catch ((err) => {
+                        throw {error: ErrorCodes.unauthorizedAccess, details: {token: action.request.headers["authorization"]}};
+                    });
+
+            }
+
+
+            if (!action.request.headers["authorization"] || !action.request.user) {
+                //console.log('got here 1');
+                throw {error: ErrorCodes.unauthorizedAccess};
+            }
+            else {
+                return Promise.resolve(true);
+            }
+
         },
 
         routePrefix: "/api",
         defaultErrorHandler: false,
         controllers: [
-            AuthorController, CurrencyController, GenreController, LanguageController, PublisherController, BookController
-            //UserController, PartnerTypeController, SupplierPartnerAccessController, LanguageController, CountryController, StateController, CityController, PartnerCustomerController, DrivingLicenceController, IdentityDocumentController
+            AuthorController, CurrencyController, GenreController, LanguageController, PublisherController, BookController, UserController
         ], // we specify controllers we want to use
         middlewares:
             [
-                CustomErrorHandler
+                UserTokenDecodeMiddleware, CustomErrorHandler
             ]
 
     });

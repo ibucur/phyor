@@ -12,6 +12,11 @@ export class CurrencyRepository {
 
     public static fillOneResourceURI(data: Currency|any):Currency|any {
         data["resourceUri"] = process.env.HOST + '/api/currencies/'+data["id"];
+        data["="] = "currency";
+        data["@1"] = {
+            "id": data.id
+        };
+        delete data.id;
         return data;
     }
 

@@ -58,5 +58,50 @@ export const ErrorCodes = {
      *     }
      */
     dataValidationFailed: {code: 9, message: 'The data you have submitted failed at validation step.', status: 406},
+    /**
+     * @apiDefine resourceNotValid
+     * @apiError (Error 4xx) resourceNotValid The provided provided e-mail address is already in use.
+     * @apiErrorExample resourceNotValid-Response:
+     *     HTTP/1.1 409 Conflict
+     *     {
+     *      "success": false,
+     *      "message": "Unable to save the user details. The password is not a valid one."
+     *     }
+     */
+    userPasswordNotValid: {code: 3, message: 'Unable to save the user details. The password is not a valid one.', status: 409},
+    /**
+     * @apiDefine invalidLoginCredentialsError
+     * @apiError (Error 4xx) invalidLoginCredentialsError The provided credentials are incorrect.
+     * @apiErrorExample invalidLoginCredentialsError-Response:
+     *     HTTP/1.1 401 Unauthorized
+     *     {
+     *      "success": false,
+     *      "message": "Unable to authenticate the user using provided credentials."
+     *     }
+     */
+    invalidLoginCredentials: {code: 5, message: 'Unable to authenticate the user using provided credentials.', status: 401},
+
+    /**
+     * @apiDefine failedToAuthenticateTokenError
+     * @apiError (Error 4xx) failedToAuthenticateTokenError The provided token is not correct.
+     * @apiErrorExample failedToAuthenticateTokenError-Response:
+     *     HTTP/1.1 401 Unauthorized
+     *     {
+     *      "success": false,
+     *      "message": "The authorization token provided is not correct."
+     *     }
+     */
+    failedToAuthenticateToken: {code: 7, message: 'The authorization token provided is not correct.', status: 401},
+    /**
+     * @apiDefine authenticationTokenExpiredError
+     * @apiError (Error 4xx) authenticationTokenExpiredError The provided token expired. You need to login again to get a new token.
+     * @apiErrorExample authenticationTokenExpiredError-Response:
+     *     HTTP/1.1 401 Unauthorized
+     *     {
+     *      "success": false,
+     *      "message": "The authorization token provided is expired."
+     *     }
+     */
+    authenticationTokenExpired: {code: 8, message: 'The authorization token provided is expired.', status: 401},
 
 };

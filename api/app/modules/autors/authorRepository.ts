@@ -12,6 +12,12 @@ export class AuthorRepository {
 
     public static fillOneAuthorURI(data: Autor|any):Autor|any {
         data["resourceUri"] = process.env.HOST + '/api/authors/'+data["id"];
+        data["="] = "author";
+        data["@1"] = {
+            "id": data.id
+        };
+        delete data.id;
+
         return data;
     }
 

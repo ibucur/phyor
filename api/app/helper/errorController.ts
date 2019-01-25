@@ -4,6 +4,7 @@ import {Service} from "typedi";
 import {Middleware, ExpressErrorMiddlewareInterface} from "routing-controllers";
 import * as util from "util";
 import {ErrorCodes} from "../constants/errorCodes";
+import {ResponseFormatter} from "./responseFormatter";
 
 
 @Middleware({ type: "after" })
@@ -50,9 +51,10 @@ export class ErrorController {
     public static processError(error, req: Request, res: Response, details: any = []) {
         return new Promise((resolve, reject) => {
             //console.log(util.inspect(res));
-            res._body = this.getResponseJson(error.code, error.message, req, res, details);
+            let data = this.getResponseJson(error.code, error.message, req, res, details);
 
-            return resolve(res.status(error.status).json(res._body));
+            return resolve(ResponseFormatter.response(res, req, data, error.status));
+
         });
     }
 

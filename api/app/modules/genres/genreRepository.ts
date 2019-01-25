@@ -12,6 +12,12 @@ export class GenreRepository {
 
     public static fillOneResourceURI(data: Genre|any):Genre|any {
         data["resourceUri"] = process.env.HOST + '/api/genres/'+data["id"];
+        data["="] = "genre";
+        data["@1"] = {
+            "id": data.id
+        };
+        delete data.id;
+
         return data;
     }
 

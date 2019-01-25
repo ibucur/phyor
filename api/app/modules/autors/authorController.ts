@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {
-    JsonController, Get, Post, Param, Body, Req, Res, QueryParam, Authorized, Put
+    JsonController, Get, Post, Param, Body, Req, Res, QueryParam, Authorized, Put, Controller
 } from "routing-controllers";
 import {Request, Response} from "express";
 const bodyParser = require('body-parser');
@@ -13,10 +13,11 @@ import {ErrorCodes} from "../../constants/errorCodes";
 import {isNullOrUndefined} from "util";
 import {AuthorRepository} from "./AuthorRepository";
 import {Autor} from "../../entities/autors";
+import {ResponseFormatter} from "../../helper/responseFormatter";
 
 
 @Service()
-@JsonController()
+@Controller()
 export class AuthorController {
 
     constructor(private repo: AuthorRepository) {
@@ -29,81 +30,6 @@ export class AuthorController {
      * @apiSuccess {String} author.name Specifies the author name.
      * @apiSuccess {Number} author.wikidataUri Specifies the wikidata author uri.
      */
-
-    /**
-     * @api {get} /api/general/countries/:countryId/cities?[pageNumber=x&&resultsPerPage=y] Get Country Cities
-     * @apiDescription Gets the available cities from a country.
-     * @apiGroup General
-     * @apiUse CityRecord
-     *
-     * @apiSuccessExample {json} Success-Response:
-     *     HTTP/1.1 200 OK
-     *     [
-     *      {
-     *          "id": 1,
-     *          "name": "Mihai Eminescu",
-     *          "wikidataUri": "https://www.wikidata.org/wiki/Q184935"
-     *      },
-     *     ]
-     *
-     */
-    /*@Get("/authors/:authorId/books")
-    getAllAuthorBooks(
-        @QueryParam("pageNumber") pageNumber: number,
-        @QueryParam("resultsPerPage") resultsPerPage: number,
-        @Param("authorId") countryId: number,
-        @Res() response: any,
-        @Req() request: any
-    ): Promise<Autor[]> {
-        return AuthorRepository.findAll(countryId, pageNumber, resultsPerPage)
-            .then(
-                (data) => {
-                    return Promise.resolve(data);
-                })
-            .catch((err) => {
-                //console.log(util.inspect(err));
-                throw {error: ErrorCodes.resourceNotFound};
-                //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
-            });
-    }*/
-
-    /**
-     * @api {get} /api/general/countries/:countryId/cities/:cityPartialName?[pageNumber=x&&resultsPerPage=y] Search Country Cities
-     * @apiDescription Gets the available cities from a country based on the city partial like name entered.
-     * @apiGroup General
-     * @apiUse CityRecord
-     *
-     * @apiSuccessExample {json} Success-Response:
-     *     HTTP/1.1 200 OK
-     *     [
-     *      {
-     *          "id": 1,
-     *          "name": "Mihai Eminescu",
-     *          "wikidataUri": "https://www.wikidata.org/wiki/Q184935"
-     *      },
-     *     ]
-     *
-     */
-    /*@Get("/authors/:authorId/books/:bookId")
-    getAllFromFilter(
-        @QueryParam("pageNumber") pageNumber: number,
-        @QueryParam("resultsPerPage") resultsPerPage: number,
-        @Param("countryId") countryId: number,
-        @Param("cityPartialName") cityPartialName: string,
-        @Res() response: any,
-        @Req() request: any
-    ): Promise<Autor[]> {
-        return AuthorRepository.findAllWithNameFilter(countryId, cityPartialName, pageNumber, resultsPerPage)
-            .then(
-                (data) => {
-                    return Promise.resolve(data);
-                })
-            .catch((err) => {
-                //console.log(util.inspect(err));
-                throw {error: ErrorCodes.resourceNotFound};
-                //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
-            });
-    }*/
 
     /**
      * @api {get} /api/authors/:authorId Get an Author
@@ -131,7 +57,7 @@ export class AuthorController {
         return AuthorRepository.findOneById(authorId)
             .then(
                 (data) => {
-                    return Promise.resolve(data);
+                    return Promise.resolve(ResponseFormatter.response(response, request, data, 200, 'author'));
                 })
             .catch((err) => {
                 //console.log(util.inspect(err));
@@ -150,7 +76,7 @@ export class AuthorController {
         return AuthorRepository.findAll(pageNumber, resultsPerPage)
             .then(
                 (data) => {
-                    return Promise.resolve(data);
+                    return Promise.resolve(ResponseFormatter.response(response, request, data, 200, 'authors'));
                 })
             .catch((err) => {
                 //console.log(util.inspect(err));
@@ -159,7 +85,7 @@ export class AuthorController {
             });
     }
 
-
+    @Authorized()
     @Post("/authors")
     save(
         @Body() autor: Autor,
@@ -169,7 +95,7 @@ export class AuthorController {
         return AuthorRepository.save(autor)
             .then(
                 (data) => {
-                    return Promise.resolve(data);
+                    return Promise.resolve(ResponseFormatter.response(response, request, data, 201, 'author'));
                 })
             .catch((err) => {
                 //console.log(util.inspect(err));

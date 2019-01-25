@@ -18,6 +18,11 @@ export class BookRepository {
 
     private static fillOneResourceURI(data: Book|any):Book|any {
         data["resourceUri"] = process.env.HOST + '/api/books/'+data["id"];
+        data["="] = "book";
+        data["@1"] = {
+            "id": data.id
+        };
+        delete data.id;
         data.publisher = PublisherRepository.fillOneResourceURI(data.publisher);
         data.currency = CurrencyRepository.fillOneResourceURI(data.currency);
         data.genre = GenreRepository.fillOneResourceURI(data.genre);

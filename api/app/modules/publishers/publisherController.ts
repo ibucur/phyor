@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {
-    JsonController, Get, Post, Param, Body, Req, Res, QueryParam, Authorized, Put
+    JsonController, Get, Post, Param, Body, Req, Res, QueryParam, Authorized, Put, Controller
 } from "routing-controllers";
 import {Request, Response} from "express";
 const bodyParser = require('body-parser');
@@ -13,9 +13,10 @@ import {ErrorCodes} from "../../constants/errorCodes";
 import {isNullOrUndefined} from "util";
 import {PublisherRepository} from "./publisherRepository";
 import {Publisher} from "../../entities/publishers";
+import {ResponseFormatter} from "../../helper/responseFormatter";
 
 @Service()
-@JsonController()
+@Controller()
 export class PublisherController {
 
     constructor(private repo: PublisherRepository) {
@@ -30,7 +31,7 @@ export class PublisherController {
         return PublisherRepository.findOneById(publisherId)
             .then(
                 (data) => {
-                    return Promise.resolve(data);
+                    return Promise.resolve(ResponseFormatter.response(response, request, data, 200, 'publisher'));
                 })
             .catch((err) => {
                 //console.log(util.inspect(err));
@@ -49,7 +50,7 @@ export class PublisherController {
         return PublisherRepository.findAll(pageNumber, resultsPerPage)
             .then(
                 (data) => {
-                    return Promise.resolve(data);
+                    return Promise.resolve(ResponseFormatter.response(response, request, data, 200, 'publishers'));
                 })
             .catch((err) => {
                 //console.log(util.inspect(err));
@@ -58,7 +59,7 @@ export class PublisherController {
             });
     }
 
-
+    @Authorized()
     @Post("/publishers")
     save(
         @Body() data: Publisher,
@@ -68,7 +69,7 @@ export class PublisherController {
         return PublisherRepository.save(data)
             .then(
                 (dataReturned) => {
-                    return Promise.resolve(dataReturned);
+                    return Promise.resolve(ResponseFormatter.response(response, request, dataReturned,201, 'publisher'));
                 })
             .catch((err) => {
                 //console.log(util.inspect(err));

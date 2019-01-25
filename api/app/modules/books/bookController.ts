@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {
-    JsonController, Get, Post, Param, Body, Req, Res, QueryParam, Authorized, Put
+    JsonController, Get, Post, Param, Body, Req, Res, QueryParam, Authorized, Put, Controller
 } from "routing-controllers";
 import {Request, Response} from "express";
 const bodyParser = require('body-parser');
@@ -13,10 +13,10 @@ import {ErrorCodes} from "../../constants/errorCodes";
 import {isNullOrUndefined} from "util";
 import {BookRepository} from "./bookRepository";
 import {Book} from "../../entities/books";
-import {PublisherRepository} from "../publishers/publisherRepository";
+import { ResponseFormatter} from "../../helper/responseFormatter";
 
 @Service()
-@JsonController()
+@Controller()
 export class BookController {
 
     constructor(private repo: BookRepository) {
@@ -30,11 +30,11 @@ export class BookController {
         @Res() response: any,
         @Req() request: any
     ): Promise<Book> {
-        return BookRepository.findBooksByAuthorId(authorId, pageNumber, resultsPerPage)
+        return  BookRepository.findBooksByAuthorId(authorId, pageNumber, resultsPerPage)
             .then(
                  (data) => {
                     if (data.length > 0) {
-                        return Promise.resolve(data);
+                        return Promise.resolve(ResponseFormatter.response(response, request, data, 200, 'books'));
                     }
                     else
                         return Promise.reject();
@@ -55,7 +55,7 @@ export class BookController {
         return BookRepository.findOneById(bookId)
             .then(
                 (data) => {
-                    return Promise.resolve(data);
+                    return Promise.resolve(ResponseFormatter.response(response, request, data, 200, 'book'));
                 })
             .catch((err) => {
                 //console.log(util.inspect(err));
@@ -74,7 +74,7 @@ export class BookController {
         return BookRepository.findAll(pageNumber, resultsPerPage)
             .then(
                 (data) => {
-                    return Promise.resolve(data);
+                    return Promise.resolve(ResponseFormatter.response(response, request, data, 200, 'books'));
                 })
             .catch((err) => {
                 //console.log(util.inspect(err));
@@ -83,7 +83,7 @@ export class BookController {
             });
     }
 
-
+    @Authorized()
     @Post("/books")
     save(
         @Body() data: Book,
@@ -93,7 +93,7 @@ export class BookController {
         return BookRepository.save(data)
             .then(
                 (dataReturned) => {
-                    return Promise.resolve(dataReturned);
+                    return Promise.resolve(ResponseFormatter.response(response, request, dataReturned,201, 'book'));
                 })
             .catch((err) => {
                 //console.log(util.inspect(err));

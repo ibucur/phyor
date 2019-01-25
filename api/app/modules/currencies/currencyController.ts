@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {
-    JsonController, Get, Post, Param, Body, Req, Res, QueryParam, Authorized, Put
+    JsonController, Get, Post, Param, Body, Req, Res, QueryParam, Authorized, Put, Controller
 } from "routing-controllers";
 import {Request, Response} from "express";
 const bodyParser = require('body-parser');
@@ -13,9 +13,10 @@ import {ErrorCodes} from "../../constants/errorCodes";
 import {isNullOrUndefined} from "util";
 import {CurrencyRepository} from "./currencyRepository";
 import {Currency} from "../../entities/currencies";
+import {ResponseFormatter} from "../../helper/responseFormatter";
 
 @Service()
-@JsonController()
+@Controller()
 export class CurrencyController {
 
     constructor(private repo: CurrencyRepository) {
@@ -30,7 +31,7 @@ export class CurrencyController {
         return CurrencyRepository.findOneById(currencyId)
             .then(
                 (data) => {
-                    return Promise.resolve(data);
+                    return Promise.resolve(ResponseFormatter.response(response, request, data, 200, 'currency'));
                 })
             .catch((err) => {
                 //console.log(util.inspect(err));
@@ -47,7 +48,7 @@ export class CurrencyController {
         return CurrencyRepository.findAll()
             .then(
                 (data) => {
-                    return Promise.resolve(data);
+                    return Promise.resolve(ResponseFormatter.response(response, request, data, 200, 'currencies'));
                 })
             .catch((err) => {
                 //console.log(util.inspect(err));
@@ -56,7 +57,7 @@ export class CurrencyController {
             });
     }
 
-
+    @Authorized()
     @Post("/currencies")
     save(
         @Body() currency: Currency,
@@ -66,7 +67,7 @@ export class CurrencyController {
         return CurrencyRepository.save(currency)
             .then(
                 (data) => {
-                    return Promise.resolve(data);
+                    return Promise.resolve(ResponseFormatter.response(response, request, data,201, 'currency'));
                 })
             .catch((err) => {
                 //console.log(util.inspect(err));

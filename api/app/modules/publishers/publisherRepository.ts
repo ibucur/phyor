@@ -12,6 +12,11 @@ export class PublisherRepository {
 
     public static fillOneResourceURI(data: Publisher|any):Publisher|any {
         data["resourceUri"] = process.env.HOST + '/api/publishers/'+data["id"];
+        data["="] = "publisher";
+        data["@1"] = {
+            "id": data.id
+        };
+        delete data.id;
         return data;
     }
 

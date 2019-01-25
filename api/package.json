@@ -41,6 +41,7 @@
     "express": "^4.15.2",
     "helmet": "^3.13.0",
     "ioredis": "^2.5.0",
+    "js2xmlparser": "^3.0.0",
     "jsonschema": "^1.1.1",
     "jsonwebtoken": "^8.3.0",
     "moment": "^2.19.2",
