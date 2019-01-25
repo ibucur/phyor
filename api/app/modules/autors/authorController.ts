@@ -11,7 +11,7 @@ import * as util from "util";
 import {ErrorCodes} from "../../constants/errorCodes";
 
 import {isNullOrUndefined} from "util";
-import {AuthorRepository} from "./AuthorRepository";
+import {AuthorRepository} from "./authorRepository";
 import {Autor} from "../../entities/autors";
 import {ResponseFormatter} from "../../helper/responseFormatter";
 

@@ -45,7 +45,7 @@ export class ResponseFormatter {
         else {
             res.setHeader('Content-Type', 'application/json');
             res.status(status);
-            
+
             data = ResponseFormatter.removeXMLTransformData(data);
 
             return res.json(data);
