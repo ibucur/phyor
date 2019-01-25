@@ -6,6 +6,7 @@ const js2xmlparser = require("js2xmlparser");
 
 export class ResponseFormatter {
     public static removeXMLTransformDetails(data: any): any {
+        if (isNullOrUndefined(data["="])) return data;
         delete data["="];
         data["id"] = data["@1"]["id"];
         delete data["@1"];
