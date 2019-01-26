@@ -35,7 +35,7 @@ paths:
       description: ''
       operationId: addAuthor
       responses:
-        '204':
+        '201':
           $ref: '#/components/responses/Author'
         '401':
           $ref: '#/components/responses/401'
@@ -85,6 +85,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: pageNumber
+          in: query
+          description: 'Specifies the page number to start showing the responses. If not specified, the default value is 0.'
+          required: false
+          schema:
+            type: number
+        - name: resultsPerPage
+          in: query
+          description: 'Specifies the number of resources which will be provided. If not specified, the default value is 20.'
+          required: false
+          schema:
+            type: number
   '/authors/{authorId}':
     get:
       tags:
@@ -119,7 +131,7 @@ paths:
       description: ''
       operationId: saveAuthor
       responses:
-        '204':
+        '202':
           $ref: '#/components/responses/Author'
         '401':
           $ref: '#/components/responses/401'
@@ -184,6 +196,18 @@ paths:
           required: true
           schema:
             type: number
+        - name: pageNumber
+          in: query
+          description: 'Specifies the page number to start showing the responses. If not specified, the default value is 0.'
+          required: false
+          schema:
+            type: number
+        - name: resultsPerPage
+          in: query
+          description: 'Specifies the number of resources which will be provided. If not specified, the default value is 20.'
+          required: false
+          schema:
+            type: number
   /currencies:
     post:
       tags:
@@ -192,7 +216,7 @@ paths:
       description: ''
       operationId: addCurrency
       responses:
-        '204':
+        '201':
           $ref: '#/components/responses/Currency'
         '401':
           $ref: '#/components/responses/401'
@@ -242,6 +266,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: pageNumber
+          in: query
+          description: 'Specifies the page number to start showing the responses. If not specified, the default value is 0.'
+          required: false
+          schema:
+            type: number
+        - name: resultsPerPage
+          in: query
+          description: 'Specifies the number of resources which will be provided. If not specified, the default value is 20.'
+          required: false
+          schema:
+            type: number
   '/currencies/{currencyId}':
     get:
       tags:
@@ -276,7 +312,7 @@ paths:
       description: ''
       operationId: saveCurrency
       responses:
-        '204':
+        '202':
           $ref: '#/components/responses/Currency'
         '401':
           $ref: '#/components/responses/401'
@@ -322,7 +358,7 @@ paths:
       description: ''
       operationId: addGenre
       responses:
-        '204':
+        '201':
           $ref: '#/components/responses/Genre'
         '401':
           $ref: '#/components/responses/401'
@@ -372,6 +408,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: pageNumber
+          in: query
+          description: 'Specifies the page number to start showing the responses. If not specified, the default value is 0.'
+          required: false
+          schema:
+            type: number
+        - name: resultsPerPage
+          in: query
+          description: 'Specifies the number of resources which will be provided. If not specified, the default value is 20.'
+          required: false
+          schema:
+            type: number
   '/genres/{genreId}':
     get:
       tags:
@@ -406,7 +454,7 @@ paths:
       description: ''
       operationId: saveGenre
       responses:
-        '204':
+        '202':
           $ref: '#/components/responses/Genre'
         '401':
           $ref: '#/components/responses/401'
@@ -452,7 +500,7 @@ paths:
       description: ''
       operationId: addLanguage
       responses:
-        '204':
+        '201':
           $ref: '#/components/responses/Language'
         '401':
           $ref: '#/components/responses/401'
@@ -502,6 +550,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: pageNumber
+          in: query
+          description: 'Specifies the page number to start showing the responses. If not specified, the default value is 0.'
+          required: false
+          schema:
+            type: number
+        - name: resultsPerPage
+          in: query
+          description: 'Specifies the number of resources which will be provided. If not specified, the default value is 20.'
+          required: false
+          schema:
+            type: number
   '/languages/{languageId}':
     get:
       tags:
@@ -536,7 +596,7 @@ paths:
       description: ''
       operationId: saveLanguage
       responses:
-        '204':
+        '202':
           $ref: '#/components/responses/Language'
         '401':
           $ref: '#/components/responses/401'
@@ -582,7 +642,7 @@ paths:
       description: ''
       operationId: addPublisher
       responses:
-        '204':
+        '201':
           $ref: '#/components/responses/Publisher'
         '401':
           $ref: '#/components/responses/401'
@@ -632,6 +692,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: pageNumber
+          in: query
+          description: 'Specifies the page number to start showing the responses. If not specified, the default value is 0.'
+          required: false
+          schema:
+            type: number
+        - name: resultsPerPage
+          in: query
+          description: 'Specifies the number of resources which will be provided. If not specified, the default value is 20.'
+          required: false
+          schema:
+            type: number
   '/publishers/{publisherId}':
     get:
       tags:
@@ -666,7 +738,7 @@ paths:
       description: ''
       operationId: savePublisher
       responses:
-        '204':
+        '202':
           $ref: '#/components/responses/Publisher'
         '401':
           $ref: '#/components/responses/401'
@@ -712,7 +784,7 @@ paths:
       description: ''
       operationId: addBook
       responses:
-        '204':
+        '201':
           $ref: '#/components/responses/Book'
         '401':
           $ref: '#/components/responses/401'
@@ -762,6 +834,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: pageNumber
+          in: query
+          description: 'Specifies the page number to start showing the responses. If not specified, the default value is 0.'
+          required: false
+          schema:
+            type: number
+        - name: resultsPerPage
+          in: query
+          description: 'Specifies the number of resources which will be provided. If not specified, the default value is 20.'
+          required: false
+          schema:
+            type: number
   '/books/{bookId}':
     get:
       tags:
@@ -796,7 +880,7 @@ paths:
       description: ''
       operationId: saveBook
       responses:
-        '204':
+        '202':
           $ref: '#/components/responses/Book'
         '401':
           $ref: '#/components/responses/401'
@@ -842,7 +926,7 @@ paths:
       description: ''
       operationId: userLogin
       responses:
-        '204':
+        '202':
           $ref: '#/components/responses/UserLogin'
         '401':
           $ref: '#/components/responses/401'
