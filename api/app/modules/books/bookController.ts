@@ -101,4 +101,25 @@ export class BookController {
                 //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
             });
     }
+
+    @Authorized()
+    @Put("/books/:bookId")
+    update(
+        @Param("bookId") bookId: number,
+        @Body() data: Book,
+        @Res() response: any,
+        @Req() request: any
+    ): Promise<Book> {
+        data.id = bookId;
+        return BookRepository.save(data)
+            .then(
+                (dataReturned) => {
+                    return Promise.resolve(ResponseFormatter.response(response, request, dataReturned,201, 'book'));
+                })
+            .catch((err) => {
+                //console.log(util.inspect(err));
+                throw {error: ErrorCodes.resourceNotValid};
+                //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
+            });
+    }
 }

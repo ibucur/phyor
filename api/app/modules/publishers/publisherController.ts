@@ -77,4 +77,25 @@ export class PublisherController {
                 //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
             });
     }
+
+    @Authorized()
+    @Put("/publishers/:publisherId")
+    update(
+        @Param("publisherId") publisherId: number,
+        @Body() data: Publisher,
+        @Res() response: any,
+        @Req() request: any
+    ): Promise<Publisher> {
+        data.id = publisherId;
+        return PublisherRepository.save(data)
+            .then(
+                (dataReturned) => {
+                    return Promise.resolve(ResponseFormatter.response(response, request, dataReturned,201, 'publisher'));
+                })
+            .catch((err) => {
+                //console.log(util.inspect(err));
+                throw {error: ErrorCodes.resourceNotValid};
+                //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
+            });
+    }
 }

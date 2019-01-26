@@ -77,4 +77,25 @@ export class LanguageController {
                 //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
             });
     }
+
+    @Authorized()
+    @Put("/languages/:languageId")
+    update(
+        @Param("languageId") languageId: number,
+        @Body() data: Language,
+        @Res() response: any,
+        @Req() request: any
+    ): Promise<Language> {
+        data.id = languageId;
+        return LanguageRepository.save(data)
+            .then(
+                (dataReturned) => {
+                    return Promise.resolve(ResponseFormatter.response(response, request, dataReturned,201, 'language'));
+                })
+            .catch((err) => {
+                //console.log(util.inspect(err));
+                throw {error: ErrorCodes.resourceNotValid};
+                //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
+            });
+    }
 }

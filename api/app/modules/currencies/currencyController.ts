@@ -75,4 +75,25 @@ export class CurrencyController {
                 //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
             });
     }
+
+    @Authorized()
+    @Put("/currencies/:currencyId")
+    update(
+        @Param("currencyId") currencyId: number,
+        @Body() currency: Currency,
+        @Res() response: any,
+        @Req() request: any
+    ): Promise<Currency> {
+        currency.id = currencyId;
+        return CurrencyRepository.save(currency)
+            .then(
+                (data) => {
+                    return Promise.resolve(ResponseFormatter.response(response, request, data,201, 'currency'));
+                })
+            .catch((err) => {
+                //console.log(util.inspect(err));
+                throw {error: ErrorCodes.resourceNotValid};
+                //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
+            });
+    }
 }

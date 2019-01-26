@@ -76,4 +76,25 @@ export class GenreController {
                 //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
             });
     }
+
+    @Authorized()
+    @Put("/genres/:genreId")
+    update(
+        @Param("genreId") genreId: number,
+        @Body() data: Genre,
+        @Res() response: any,
+        @Req() request: any
+    ): Promise<Genre> {
+        data.id = genreId;
+        return GenreRepository.save(data)
+            .then(
+                (dataReturned) => {
+                    return Promise.resolve(ResponseFormatter.response(response, request, dataReturned,201, 'genre'));
+                })
+            .catch((err) => {
+                //console.log(util.inspect(err));
+                throw {error: ErrorCodes.resourceNotValid};
+                //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
+            });
+    }
 }
