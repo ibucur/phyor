@@ -56,7 +56,7 @@
 				"description": "",
 				"operationId": "addAuthor",
 				"responses": {
-					"204": {
+					"201": {
 						"$ref": "#/components/responses/Author"
 					},
 					"401": {
@@ -131,6 +131,24 @@
 						"schema": {
 							"type": "string"
 						}
+					},
+					{
+						"name": "pageNumber",
+						"in": "query",
+						"description": "Specifies the page number to start showing the responses. If not specified, the default value is 0.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "resultsPerPage",
+						"in": "query",
+						"description": "Specifies the number of resources which will be provided. If not specified, the default value is 20.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
 					}
 				]
 			}
@@ -179,7 +197,7 @@
 				"description": "",
 				"operationId": "saveAuthor",
 				"responses": {
-					"204": {
+					"202": {
 						"$ref": "#/components/responses/Author"
 					},
 					"401": {
@@ -277,6 +295,24 @@
 						"schema": {
 							"type": "number"
 						}
+					},
+					{
+						"name": "pageNumber",
+						"in": "query",
+						"description": "Specifies the page number to start showing the responses. If not specified, the default value is 0.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "resultsPerPage",
+						"in": "query",
+						"description": "Specifies the number of resources which will be provided. If not specified, the default value is 20.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
 					}
 				]
 			}
@@ -288,7 +324,7 @@
 				"description": "",
 				"operationId": "addCurrency",
 				"responses": {
-					"204": {
+					"201": {
 						"$ref": "#/components/responses/Currency"
 					},
 					"401": {
@@ -363,6 +399,24 @@
 						"schema": {
 							"type": "string"
 						}
+					},
+					{
+						"name": "pageNumber",
+						"in": "query",
+						"description": "Specifies the page number to start showing the responses. If not specified, the default value is 0.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "resultsPerPage",
+						"in": "query",
+						"description": "Specifies the number of resources which will be provided. If not specified, the default value is 20.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
 					}
 				]
 			}
@@ -411,7 +465,7 @@
 				"description": "",
 				"operationId": "saveCurrency",
 				"responses": {
-					"204": {
+					"202": {
 						"$ref": "#/components/responses/Currency"
 					},
 					"401": {
@@ -481,7 +535,7 @@
 				"description": "",
 				"operationId": "addGenre",
 				"responses": {
-					"204": {
+					"201": {
 						"$ref": "#/components/responses/Genre"
 					},
 					"401": {
@@ -556,6 +610,24 @@
 						"schema": {
 							"type": "string"
 						}
+					},
+					{
+						"name": "pageNumber",
+						"in": "query",
+						"description": "Specifies the page number to start showing the responses. If not specified, the default value is 0.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "resultsPerPage",
+						"in": "query",
+						"description": "Specifies the number of resources which will be provided. If not specified, the default value is 20.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
 					}
 				]
 			}
@@ -604,7 +676,7 @@
 				"description": "",
 				"operationId": "saveGenre",
 				"responses": {
-					"204": {
+					"202": {
 						"$ref": "#/components/responses/Genre"
 					},
 					"401": {
@@ -674,7 +746,7 @@
 				"description": "",
 				"operationId": "addLanguage",
 				"responses": {
-					"204": {
+					"201": {
 						"$ref": "#/components/responses/Language"
 					},
 					"401": {
@@ -749,6 +821,24 @@
 						"schema": {
 							"type": "string"
 						}
+					},
+					{
+						"name": "pageNumber",
+						"in": "query",
+						"description": "Specifies the page number to start showing the responses. If not specified, the default value is 0.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "resultsPerPage",
+						"in": "query",
+						"description": "Specifies the number of resources which will be provided. If not specified, the default value is 20.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
 					}
 				]
 			}
@@ -797,7 +887,7 @@
 				"description": "",
 				"operationId": "saveLanguage",
 				"responses": {
-					"204": {
+					"202": {
 						"$ref": "#/components/responses/Language"
 					},
 					"401": {
@@ -867,7 +957,7 @@
 				"description": "",
 				"operationId": "addPublisher",
 				"responses": {
-					"204": {
+					"201": {
 						"$ref": "#/components/responses/Publisher"
 					},
 					"401": {
@@ -942,6 +1032,24 @@
 						"schema": {
 							"type": "string"
 						}
+					},
+					{
+						"name": "pageNumber",
+						"in": "query",
+						"description": "Specifies the page number to start showing the responses. If not specified, the default value is 0.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "resultsPerPage",
+						"in": "query",
+						"description": "Specifies the number of resources which will be provided. If not specified, the default value is 20.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
 					}
 				]
 			}
@@ -990,7 +1098,7 @@
 				"description": "",
 				"operationId": "savePublisher",
 				"responses": {
-					"204": {
+					"202": {
 						"$ref": "#/components/responses/Publisher"
 					},
 					"401": {
@@ -1060,7 +1168,7 @@
 				"description": "",
 				"operationId": "addBook",
 				"responses": {
-					"204": {
+					"201": {
 						"$ref": "#/components/responses/Book"
 					},
 					"401": {
@@ -1135,6 +1243,24 @@
 						"schema": {
 							"type": "string"
 						}
+					},
+					{
+						"name": "pageNumber",
+						"in": "query",
+						"description": "Specifies the page number to start showing the responses. If not specified, the default value is 0.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
+					},
+					{
+						"name": "resultsPerPage",
+						"in": "query",
+						"description": "Specifies the number of resources which will be provided. If not specified, the default value is 20.",
+						"required": false,
+						"schema": {
+							"type": "number"
+						}
 					}
 				]
 			}
@@ -1183,7 +1309,7 @@
 				"description": "",
 				"operationId": "saveBook",
 				"responses": {
-					"204": {
+					"202": {
 						"$ref": "#/components/responses/Book"
 					},
 					"401": {
@@ -1253,7 +1379,7 @@
 				"description": "",
 				"operationId": "userLogin",
 				"responses": {
-					"204": {
+					"202": {
 						"$ref": "#/components/responses/UserLogin"
 					},
 					"401": {

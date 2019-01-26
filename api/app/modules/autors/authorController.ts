@@ -104,4 +104,25 @@ export class AuthorController {
             });
     }
 
+    @Authorized()
+    @Put("/authors/:authorId")
+    update(
+        @Param("authorId") authorId: number,
+        @Body() autor: Autor,
+        @Res() response: any,
+        @Req() request: any
+    ): Promise<Autor> {
+        autor.id = authorId;
+        return AuthorRepository.save(autor)
+            .then(
+                (data) => {
+                    return Promise.resolve(ResponseFormatter.response(response, request, data, 202, 'author'));
+                })
+            .catch((err) => {
+                //console.log(util.inspect(err));
+                throw {error: ErrorCodes.resourceNotValid};
+                //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
+            });
+    }
+
 }
