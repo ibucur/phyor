@@ -1,281 +1,2088 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "description": "Phyor Server",
-    "version": "1.0.0",
-    "title": "Phyor - Physical Object Recommender",
-    "contact": {
-      "email": "ibucur@ima-solutions.ro"
-    }
-  },
-  "host": "localhost",
-  "basePath": "/phyor",
-  "tags": [
-    {
-      "name": "products",
-      "description": "Access to products information"
-    },
-    {
-      "name": "categories",
-      "description": "Access the categories details"
-    }
-  ],
-  "schemes": [
-    "http",
-    "https"
-  ],
-  "paths": {
-    "/products": {
-      "get": {
-        "tags": [
-          "products"
-        ],
-        "summary": "get all the products",
-        "description": "",
-        "parameters": [
-          {
-            "name": "categoryId",
-            "in": "query",
-            "description": "specifies the category the products get listed",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "pageNo",
-            "in": "query",
-            "description": "specifies the number of the page the products get listed",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "resultsPerPage",
-            "in": "query",
-            "description": "specifies the number of products that gets listed in the response",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "All OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "$ref": "#/definitions/Product"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/products/{productId}/{outputFormat}": {
-      "get": {
-        "tags": [
-          "products"
-        ],
-        "summary": "Gets all possible details for a product, including the similarities in the specified format",
-        "description": "",
-        "operationId": "getProduct",
-        "parameters": [
-          {
-            "name": "productId",
-            "in": "path",
-            "description": "The unique id (identifier) of a product",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "outputFormat",
-            "in": "path",
-            "description": "The format of the output ('html','json','rdf')",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json",
-          "text/html",
-          "application/rdf"
-        ],
-        "responses": {
-          "200": {
-            "description": "All OK",
-            "schema": {
-              "type": "object",
-              "$ref": "#/definitions/Product"
-            }
-          }
-        }
-      }
-    },
-    "/products/{productId}/similar/{outputFormat}": {
-      "get": {
-        "tags": [
-          "products"
-        ],
-        "summary": "Returns the similar products based on a specified product unique identification number in a specified format.",
-        "description": "",
-        "operationId": "getProductSimilarities",
-        "produces": [
-          "application/json",
-          "text/html",
-          "application/rdf"
-        ],
-        "parameters": [
-          {
-            "name": "productId",
-            "in": "path",
-            "description": "The unique id (identifier) of a product",
-            "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "outputFormat",
-            "in": "path",
-            "description": "The format of the output ('html','json','rdf')",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "All OK",
-            "schema": {
-              "type": "object",
-              "$ref": "#/definitions/SimilarProduct"
-            }
-          },
-          "404": {
-            "description": "Product details not found"
-          },
-          "405": {
-            "description": "Product ID is invalid"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/categories": {
-      "get": {
-        "tags": [
-          "categories"
-        ],
-        "summary": "Returns all the categories in a JSON format",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "All OK"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "categories"
-        ],
-        "summary": "Adds a new category to the system",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "All OK"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "Product": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "language": {
-          "type": "string"
-        },
-        "price": {
-          "type": "number"
-        },
-        "currency": {
-          "type": "string"
-        },
-        "format": {
-          "type": "string"
-        },
-        "category": {
-          "type": "object",
-          "$ref": "#/definitions/Category"
-        },
-        "similarProducts": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/SimilarProduct"
-          }
-        }
-      }
-    },
-    "SimilarProduct": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "category": {
-          "type": "object",
-          "$ref": "#/definitions/Category"
-        },
-        "uri": {
-          "type": "string"
-        }
-      }
-    },
-    "Category": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "language": {
-          "type": "string"
-        }
-      }
-    },
-    "ApiResponse": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "type": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        }
-      }
-    }
-  },
-  "externalDocs": {
-    "description": "Find out more about Phyor",
-    "url": "https://github.com/ibucur/phyor"
-  }
+	"openapi": "3.0.0",
+	"info": {
+		"description": ":phyor: :wade: :infoiasi: This is a restful api documentation implementation for Phyor Wade Project.",
+		"version": "1.0.0",
+		"title": "Phyor",
+		"contact": {
+			"email": "irinel.bucur@gmail.com"
+		},
+		"license": {
+			"name": "Apache 2.0",
+			"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+		}
+	},
+	"servers": [
+		{
+			"url": "https://ibucur.zego.ro/api",
+			"description": "Production server"
+		}
+	],
+	"tags": [
+		{
+			"name": "authors",
+			"description": "Everything needed about authors"
+		},
+		{
+			"name": "books",
+			"description": "Access to books details"
+		},
+		{
+			"name": "currencies",
+			"description": "Access to currencies details"
+		},
+		{
+			"name": "genres",
+			"description": "Access to genres details"
+		},
+		{
+			"name": "languages",
+			"description": "Access to languages details"
+		},
+		{
+			"name": "publishers",
+			"description": "Access to publishers details"
+		},
+		{
+			"name": "user",
+			"description": "Operations about users with editor rights"
+		}
+	],
+	"paths": {
+		"/authors": {
+			"post": {
+				"tags": ["authors"],
+				"summary": "Add a new author to the store",
+				"description": "",
+				"operationId": "addAuthor",
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/Author"
+					},
+					"401": {
+						"$ref": "#/components/responses/401"
+					},
+					"406": {
+						"$ref": "#/components/responses/406"
+					},
+					"409": {
+						"$ref": "#/components/responses/409"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"security": [
+					{
+						"phyor_auth": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Author"
+							}
+						}
+					},
+					"description": "Specifies the details of a new resource to be stored",
+					"required": true
+				},
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "The login provided authorization token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"get": {
+				"tags": ["authors"],
+				"summary": "Get all authors",
+				"description": "",
+				"operationId": "getAllAuthor",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/AuthorList"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/authors/{authorId}": {
+			"get": {
+				"tags": ["authors"],
+				"summary": "Get an author",
+				"description": "",
+				"operationId": "getAuthor",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/Author"
+					},
+					"404": {
+						"$ref": "#/components/responses/404"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "authorId",
+						"in": "path",
+						"description": "Specifies the unique it of an author to get the details about.",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					}
+				]
+			},
+			"put": {
+				"tags": ["authors"],
+				"summary": "Update an author to the store",
+				"description": "",
+				"operationId": "saveAuthor",
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/Author"
+					},
+					"401": {
+						"$ref": "#/components/responses/401"
+					},
+					"406": {
+						"$ref": "#/components/responses/406"
+					},
+					"409": {
+						"$ref": "#/components/responses/409"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"security": [
+					{
+						"phyor_auth": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Author"
+							}
+						}
+					},
+					"description": "Specifies the details of a new resource to be stored",
+					"required": true
+				},
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "The login provided authorization token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "authorId",
+						"in": "path",
+						"description": "Specifies the unique it of an author to get the details about.",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/authors/{authorId}/books": {
+			"get": {
+				"tags": ["authors"],
+				"summary": "Get a list with all the books from a specified author",
+				"description": "",
+				"operationId": "getAuthorBooks",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/BookList"
+					},
+					"404": {
+						"$ref": "#/components/responses/404"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "authorId",
+						"in": "path",
+						"description": "Specifies the unique it of an author to get the list of books.",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/currencies": {
+			"post": {
+				"tags": ["currencies"],
+				"summary": "Add a new currency to the store",
+				"description": "",
+				"operationId": "addCurrency",
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/Currency"
+					},
+					"401": {
+						"$ref": "#/components/responses/401"
+					},
+					"406": {
+						"$ref": "#/components/responses/406"
+					},
+					"409": {
+						"$ref": "#/components/responses/409"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"security": [
+					{
+						"phyor_auth": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Currency"
+							}
+						}
+					},
+					"description": "Specifies the details of a new resource to be stored",
+					"required": true
+				},
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "The login provided authorization token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"get": {
+				"tags": ["currencies"],
+				"summary": "Get all currencies",
+				"description": "",
+				"operationId": "getAllCurrencies",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/CurrencyList"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/currencies/{currencyId}": {
+			"get": {
+				"tags": ["currencies"],
+				"summary": "Get a currency",
+				"description": "",
+				"operationId": "getCurrency",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/Currency"
+					},
+					"404": {
+						"$ref": "#/components/responses/404"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "currencyId",
+						"in": "path",
+						"description": "Specifies the unique it of a currency to get the details about.",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					}
+				]
+			},
+			"put": {
+				"tags": ["currencies"],
+				"summary": "Update a currency to the store",
+				"description": "",
+				"operationId": "saveCurrency",
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/Currency"
+					},
+					"401": {
+						"$ref": "#/components/responses/401"
+					},
+					"406": {
+						"$ref": "#/components/responses/406"
+					},
+					"409": {
+						"$ref": "#/components/responses/409"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"security": [
+					{
+						"phyor_auth": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Currency"
+							}
+						}
+					},
+					"description": "Specifies the details of a new resource to be stored",
+					"required": true
+				},
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "The login provided authorization token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "currencyId",
+						"in": "path",
+						"description": "Specifies the unique it of a currency to get the details about.",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/genres": {
+			"post": {
+				"tags": ["genres"],
+				"summary": "Add a new genre to the store",
+				"description": "",
+				"operationId": "addGenre",
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/Genre"
+					},
+					"401": {
+						"$ref": "#/components/responses/401"
+					},
+					"406": {
+						"$ref": "#/components/responses/406"
+					},
+					"409": {
+						"$ref": "#/components/responses/409"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"security": [
+					{
+						"phyor_auth": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Genre"
+							}
+						}
+					},
+					"description": "Specifies the details of a new resource to be stored",
+					"required": true
+				},
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "The login provided authorization token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"get": {
+				"tags": ["genres"],
+				"summary": "Get all genres",
+				"description": "",
+				"operationId": "getAllGenres",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/GenreList"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/genres/{genreId}": {
+			"get": {
+				"tags": ["genres"],
+				"summary": "Get a genre",
+				"description": "",
+				"operationId": "getGenre",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/Genre"
+					},
+					"404": {
+						"$ref": "#/components/responses/404"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "genreId",
+						"in": "path",
+						"description": "Specifies the unique it of a genre to get the details about.",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					}
+				]
+			},
+			"put": {
+				"tags": ["genres"],
+				"summary": "Update a genre to the store",
+				"description": "",
+				"operationId": "saveGenre",
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/Genre"
+					},
+					"401": {
+						"$ref": "#/components/responses/401"
+					},
+					"406": {
+						"$ref": "#/components/responses/406"
+					},
+					"409": {
+						"$ref": "#/components/responses/409"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"security": [
+					{
+						"phyor_auth": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Genre"
+							}
+						}
+					},
+					"description": "Specifies the details of a new resource to be stored",
+					"required": true
+				},
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "The login provided authorization token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "genreId",
+						"in": "path",
+						"description": "Specifies the unique it of a genre to get the details about.",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/languages": {
+			"post": {
+				"tags": ["languages"],
+				"summary": "Add a new language to the store",
+				"description": "",
+				"operationId": "addLanguage",
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/Language"
+					},
+					"401": {
+						"$ref": "#/components/responses/401"
+					},
+					"406": {
+						"$ref": "#/components/responses/406"
+					},
+					"409": {
+						"$ref": "#/components/responses/409"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"security": [
+					{
+						"phyor_auth": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Language"
+							}
+						}
+					},
+					"description": "Specifies the details of a new resource to be stored",
+					"required": true
+				},
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "The login provided authorization token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"get": {
+				"tags": ["languages"],
+				"summary": "Get all languages",
+				"description": "",
+				"operationId": "getAllLanguages",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/LanguageList"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/languages/{languageId}": {
+			"get": {
+				"tags": ["languages"],
+				"summary": "Get a language",
+				"description": "",
+				"operationId": "getLanguage",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/Language"
+					},
+					"404": {
+						"$ref": "#/components/responses/404"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "languageId",
+						"in": "path",
+						"description": "Specifies the unique it of a language to get the details about.",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					}
+				]
+			},
+			"put": {
+				"tags": ["languages"],
+				"summary": "Update a language to the store",
+				"description": "",
+				"operationId": "saveLanguage",
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/Language"
+					},
+					"401": {
+						"$ref": "#/components/responses/401"
+					},
+					"406": {
+						"$ref": "#/components/responses/406"
+					},
+					"409": {
+						"$ref": "#/components/responses/409"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"security": [
+					{
+						"phyor_auth": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Language"
+							}
+						}
+					},
+					"description": "Specifies the details of a new resource to be stored",
+					"required": true
+				},
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "The login provided authorization token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "languageId",
+						"in": "path",
+						"description": "Specifies the unique it of a language to get the details about.",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/publishers": {
+			"post": {
+				"tags": ["publishers"],
+				"summary": "Add a new publisher to the store",
+				"description": "",
+				"operationId": "addPublisher",
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/Publisher"
+					},
+					"401": {
+						"$ref": "#/components/responses/401"
+					},
+					"406": {
+						"$ref": "#/components/responses/406"
+					},
+					"409": {
+						"$ref": "#/components/responses/409"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"security": [
+					{
+						"phyor_auth": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Publisher"
+							}
+						}
+					},
+					"description": "Specifies the details of a new resource to be stored",
+					"required": true
+				},
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "The login provided authorization token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"get": {
+				"tags": ["publishers"],
+				"summary": "Get all publisher",
+				"description": "",
+				"operationId": "getAllPublishers",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/PublisherList"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/publishers/{publisherId}": {
+			"get": {
+				"tags": ["publishers"],
+				"summary": "Get a publisher",
+				"description": "",
+				"operationId": "getPublisher",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/Publisher"
+					},
+					"404": {
+						"$ref": "#/components/responses/404"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "publisherId",
+						"in": "path",
+						"description": "Specifies the unique it of a publisher to get the details about.",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					}
+				]
+			},
+			"put": {
+				"tags": ["publishers"],
+				"summary": "Update a publisher to the store",
+				"description": "",
+				"operationId": "savePublisher",
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/Publisher"
+					},
+					"401": {
+						"$ref": "#/components/responses/401"
+					},
+					"406": {
+						"$ref": "#/components/responses/406"
+					},
+					"409": {
+						"$ref": "#/components/responses/409"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"security": [
+					{
+						"phyor_auth": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Publisher"
+							}
+						}
+					},
+					"description": "Specifies the details of a new resource to be stored",
+					"required": true
+				},
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "The login provided authorization token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "publisherId",
+						"in": "path",
+						"description": "Specifies the unique it of a publisher to get the details about.",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/books": {
+			"post": {
+				"tags": ["books"],
+				"summary": "Add a new book to the store",
+				"description": "",
+				"operationId": "addBook",
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/Book"
+					},
+					"401": {
+						"$ref": "#/components/responses/401"
+					},
+					"406": {
+						"$ref": "#/components/responses/406"
+					},
+					"409": {
+						"$ref": "#/components/responses/409"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"security": [
+					{
+						"phyor_auth": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Book"
+							}
+						}
+					},
+					"description": "Specifies the details of a new resource to be stored",
+					"required": true
+				},
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "The login provided authorization token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"get": {
+				"tags": ["books"],
+				"summary": "Get all books",
+				"description": "",
+				"operationId": "getAllBooks",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/BookList"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/books/{bookId}": {
+			"get": {
+				"tags": ["books"],
+				"summary": "Get a book",
+				"description": "",
+				"operationId": "getBook",
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/Book"
+					},
+					"404": {
+						"$ref": "#/components/responses/404"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "bookId",
+						"in": "path",
+						"description": "Specifies the unique it of a book to get the details about.",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					}
+				]
+			},
+			"put": {
+				"tags": ["books"],
+				"summary": "Update a book to the store",
+				"description": "",
+				"operationId": "saveBook",
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/Book"
+					},
+					"401": {
+						"$ref": "#/components/responses/401"
+					},
+					"406": {
+						"$ref": "#/components/responses/406"
+					},
+					"409": {
+						"$ref": "#/components/responses/409"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"security": [
+					{
+						"phyor_auth": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Book"
+							}
+						}
+					},
+					"description": "Specifies the details of a new resource to be stored",
+					"required": true
+				},
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "The login provided authorization token",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "bookId",
+						"in": "path",
+						"description": "Specifies the unique it of a book to get the details about.",
+						"required": true,
+						"schema": {
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/users/login": {
+			"post": {
+				"tags": ["users"],
+				"summary": "Perform the user login",
+				"description": "",
+				"operationId": "userLogin",
+				"responses": {
+					"204": {
+						"$ref": "#/components/responses/UserLogin"
+					},
+					"401": {
+						"$ref": "#/components/responses/401"
+					},
+					"406": {
+						"$ref": "#/components/responses/406"
+					},
+					"409": {
+						"$ref": "#/components/responses/409"
+					},
+					"501": {
+						"$ref": "#/components/responses/501"
+					}
+				},
+				"security": [
+					{
+						"phyor_auth": []
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserLogin"
+							}
+						}
+					},
+					"description": "Specifies the details of a new resource to be stored",
+					"required": true
+				},
+				"parameters": [
+					{
+						"name": "Accept",
+						"in": "header",
+						"description": "Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"externalDocs": {
+		"description": "See more details at our github wiki page",
+		"url": "https://github.com/ibucur/phyor"
+	},
+	"components": {
+		"schemas": {
+			"Author": {
+				"description": "Author resource",
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Unique identification number for the author"
+					},
+					"name": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Full name of the author"
+					},
+					"wikidataUri": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the external resource uri which better describes the author"
+					},
+					"resourceUri": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the local resource unique uri"
+					}
+				},
+				"xml": {
+					"name": "author"
+				}
+			},
+			"AuthorList": {
+				"description": "List of authors",
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Author"
+				},
+				"xml": {
+					"name": "authors"
+				}
+			},
+			"Currency": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Unique identification number for the currency"
+					},
+					"shortcut": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Currency ISO 3 letter code"
+					},
+					"name": {
+						"type": "string",
+						"format": "varchar",
+						"description": "The currency name"
+					},
+					"wikidataUri": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the external resource uri which better describes the currency"
+					},
+					"resourceUri": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the local resource unique uri"
+					}
+				},
+				"xml": {
+					"name": "currency"
+				}
+			},
+			"CurrencyList": {
+				"description": "List of currencies",
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Currency"
+				},
+				"xml": {
+					"name": "currencies"
+				}
+			},
+			"Genre": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Unique identification number for the genre"
+					},
+					"name": {
+						"type": "string",
+						"format": "varchar",
+						"description": "The genre name"
+					},
+					"wikidataUri": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the external resource uri which better describes the resource"
+					},
+					"resourceUri": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the local resource unique uri"
+					}
+				},
+				"xml": {
+					"name": "genre"
+				}
+			},
+			"GenreList": {
+				"description": "List of genres",
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Genre"
+				},
+				"xml": {
+					"name": "genres"
+				}
+			},
+			"Language": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Unique identification number for the language"
+					},
+					"name": {
+						"type": "string",
+						"format": "varchar",
+						"description": "The language name"
+					},
+					"wikidataUri": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the external resource uri which better describes the resource"
+					},
+					"resourceUri": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the local resource unique uri"
+					}
+				},
+				"xml": {
+					"name": "language"
+				}
+			},
+			"LanguageList": {
+				"description": "List of languages",
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Language"
+				},
+				"xml": {
+					"name": "languages"
+				}
+			},
+			"Publisher": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Unique identification number for the publisher"
+					},
+					"name": {
+						"type": "string",
+						"format": "varchar",
+						"description": "The publisher name"
+					},
+					"wikidataUri": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the external resource uri which better describes the resource"
+					},
+					"resourceUri": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the local resource unique uri"
+					}
+				},
+				"xml": {
+					"name": "publisher"
+				}
+			},
+			"PublisherList": {
+				"description": "List of publishers",
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Publisher"
+				},
+				"xml": {
+					"name": "publishers"
+				}
+			},
+			"Book": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Unique identification number for the book"
+					},
+					"title": {
+						"type": "string",
+						"format": "varchar",
+						"description": "The book title"
+					},
+					"isbn": {
+						"type": "string",
+						"format": "varchar",
+						"description": "The ISBN13 which identifies the book"
+					},
+					"imageUri": {
+						"type": "string",
+						"format": "varchar",
+						"description": "The external book image uri"
+					},
+					"plot": {
+						"type": "string",
+						"format": "varchar",
+						"description": "A short descriptive info about the book"
+					},
+					"pagesNo": {
+						"type": "number",
+						"format": "int32",
+						"description": "The number of pages of the book"
+					},
+					"price": {
+						"type": "number",
+						"format": "decimal",
+						"description": "The book price value"
+					},
+					"author": {
+						"$ref": "#/components/schemas/Author"
+					},
+					"genre": {
+						"$ref": "#/components/schemas/Genre"
+					},
+					"publisher": {
+						"$ref": "#/components/schemas/Publisher"
+					},
+					"language": {
+						"$ref": "#/components/schemas/Language"
+					},
+					"currency": {
+						"$ref": "#/components/schemas/Currency"
+					},
+					"resourceUri": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the local resource unique uri"
+					}
+				},
+				"xml": {
+					"name": "book"
+				}
+			},
+			"BookList": {
+				"description": "List of books",
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Book"
+				},
+				"xml": {
+					"name": "books"
+				}
+			},
+			"User": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int64",
+						"description": "Unique identification number for the user"
+					},
+					"name": {
+						"type": "string",
+						"format": "varchar",
+						"description": "The user full name"
+					},
+					"email": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the user email address"
+					},
+					"password": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the user password. All the requests where the user details are retrieved does not contain this property due to security reasons and anyway it is stored using an encoded 256 bits hash."
+					}
+				},
+				"xml": {
+					"name": "user"
+				}
+			},
+			"UserLogin": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"description": "Specifies the user email address"
+					},
+					"password": {
+						"type": "string",
+						"description": "Specifies the password used to login in a plain text format"
+					}
+				},
+				"xml": {
+					"name": "userLogin"
+				}
+			},
+			"UserLoginResponse": {
+				"type": "object",
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"default": true,
+						"description": "Specifies the success status of the operation"
+					},
+					"message": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies a message which better describes what should be done after the login operation in order to get access to the protected areas"
+					},
+					"token": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies the token which should be sent in the Header of each request which requires authorization level. The token is a JWT."
+					},
+					"user": {
+						"$ref": "#/components/schemas/User"
+					}
+				}
+			},
+			"ApiErrorResponse": {
+				"description": "API Error returned",
+				"type": "object",
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"default": false,
+						"description": "Specifies the success status of the operation"
+					},
+					"code": {
+						"type": "integer",
+						"format": "int32",
+						"description": "Specifies an unique code to better identify the error"
+					},
+					"message": {
+						"type": "string",
+						"format": "varchar",
+						"description": "Specifies a message which better describes the error"
+					},
+					"debug": {
+						"type": "object",
+						"properties": {
+							"request": {
+								"type": "object",
+								"properties": {
+									"request_url": {
+										"type": "string",
+										"description": "Specifies the called uri which generated the error"
+									},
+									"request_queryParams": {
+										"type": "string",
+										"description": "Specifies the query params used when called the uri which generated the error"
+									},
+									"request_uriParams": {
+										"type": "string",
+										"description": "Specifies the uri parameters like the book id or author id used when called the uri which generated the error"
+									},
+									"request_postParams": {
+										"type": "object",
+										"description": "Contains an object with all the values sent. It is different based on the post used."
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"requestBodies": {
+			"Author": {
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Author"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/Author"
+						}
+					}
+				},
+				"description": "Author objects to be added to the database",
+				"required": true
+			},
+			"Book": {
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Book"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/Book"
+						}
+					}
+				},
+				"description": "Book objects to be added to the database",
+				"required": true
+			},
+			"Currency": {
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Currency"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/Currency"
+						}
+					}
+				},
+				"description": "Currency objects to be added to the database",
+				"required": true
+			},
+			"Genre": {
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Genre"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/Genre"
+						}
+					}
+				},
+				"description": "Genre objects to be added to the database",
+				"required": true
+			},
+			"Language": {
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Language"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/Language"
+						}
+					}
+				},
+				"description": "Language objects to be added to the database",
+				"required": true
+			},
+			"Publisher": {
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Publisher"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/Publisher"
+						}
+					}
+				},
+				"description": "Publisher objects to be added to the database",
+				"required": true
+			},
+			"UserLogin": {
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/UserLogin"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/UserLogin"
+						}
+					}
+				},
+				"description": "UserLogin objects to be validated when performing login operation",
+				"required": true
+			}
+		},
+		"responses": {
+			"Author": {
+				"description": "Author response",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Author"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/Author"
+						}
+					}
+				}
+			},
+			"AuthorList": {
+				"description": "Author list response",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/AuthorList"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/AuthorList"
+						}
+					}
+				}
+			},
+			"Book": {
+				"description": "Book response",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Book"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/Book"
+						}
+					}
+				}
+			},
+			"BookList": {
+				"description": "Books list response",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/BookList"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/BookList"
+						}
+					}
+				}
+			},
+			"Currency": {
+				"description": "Currency response",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Currency"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/Currency"
+						}
+					}
+				}
+			},
+			"CurrencyList": {
+				"description": "Currency list response",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/CurrencyList"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/CurrencyList"
+						}
+					}
+				}
+			},
+			"Genre": {
+				"description": "Genre response",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Genre"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/Genre"
+						}
+					}
+				}
+			},
+			"GenreList": {
+				"description": "Genre list response",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/GenreList"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/GenreList"
+						}
+					}
+				}
+			},
+			"Language": {
+				"description": "Language response",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Language"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/Language"
+						}
+					}
+				}
+			},
+			"LanguageList": {
+				"description": "Language list response",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/LanguageList"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/LanguageList"
+						}
+					}
+				}
+			},
+			"Publisher": {
+				"description": "Publisher response",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Publisher"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/Publisher"
+						}
+					}
+				}
+			},
+			"PublisherList": {
+				"description": "Publisher list response",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/PublisherList"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/PublisherList"
+						}
+					}
+				}
+			},
+			"UserLogin": {
+				"description": "User Login Successful Response",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/UserLoginResponse"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/UserLoginResponse"
+						}
+					}
+				}
+			},
+			"401": {
+				"description": "Unauthorized access",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/ApiErrorResponse"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/ApiErrorResponse"
+						}
+					}
+				}
+			},
+			"404": {
+				"description": "The requested resource does not exists",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/ApiErrorResponse"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/ApiErrorResponse"
+						}
+					}
+				}
+			},
+			"406": {
+				"description": "Submitted data validation failed",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/ApiErrorResponse"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/ApiErrorResponse"
+						}
+					}
+				}
+			},
+			"409": {
+				"description": "The submitted resource is not valid",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/ApiErrorResponse"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/ApiErrorResponse"
+						}
+					}
+				}
+			},
+			"501": {
+				"description": "Unexpected error",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/ApiErrorResponse"
+						}
+					},
+					"application/xml": {
+						"schema": {
+							"$ref": "#/components/schemas/ApiErrorResponse"
+						}
+					}
+				}
+			}
+		},
+		"securitySchemes": {
+			"phyor_auth": {
+				"type": "apiKey",
+				"name": "authorization",
+				"in": "header"
+			}
+		},
+	},
+	"security": []
+
 }
