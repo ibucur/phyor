@@ -203,6 +203,9 @@
 					"401": {
 						"$ref": "#/components/responses/401"
 					},
+					"404": {
+						"$ref": "#/components/responses/404"
+					},
 					"406": {
 						"$ref": "#/components/responses/406"
 					},
@@ -471,6 +474,9 @@
 					"401": {
 						"$ref": "#/components/responses/401"
 					},
+					"404": {
+						"$ref": "#/components/responses/404"
+					},
 					"406": {
 						"$ref": "#/components/responses/406"
 					},
@@ -681,6 +687,9 @@
 					},
 					"401": {
 						"$ref": "#/components/responses/401"
+					},
+					"404": {
+						"$ref": "#/components/responses/404"
 					},
 					"406": {
 						"$ref": "#/components/responses/406"
@@ -893,6 +902,9 @@
 					"401": {
 						"$ref": "#/components/responses/401"
 					},
+					"404": {
+						"$ref": "#/components/responses/404"
+					},
 					"406": {
 						"$ref": "#/components/responses/406"
 					},
@@ -1104,6 +1116,9 @@
 					"401": {
 						"$ref": "#/components/responses/401"
 					},
+					"404": {
+						"$ref": "#/components/responses/404"
+					},
 					"406": {
 						"$ref": "#/components/responses/406"
 					},
@@ -1314,6 +1329,9 @@
 					},
 					"401": {
 						"$ref": "#/components/responses/401"
+					},
+					"404": {
+						"$ref": "#/components/responses/404"
 					},
 					"406": {
 						"$ref": "#/components/responses/406"

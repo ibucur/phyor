@@ -135,6 +135,8 @@ paths:
           $ref: '#/components/responses/Author'
         '401':
           $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
         '406':
           $ref: '#/components/responses/406'
         '409':
@@ -316,6 +318,8 @@ paths:
           $ref: '#/components/responses/Currency'
         '401':
           $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
         '406':
           $ref: '#/components/responses/406'
         '409':
@@ -458,6 +462,8 @@ paths:
           $ref: '#/components/responses/Genre'
         '401':
           $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
         '406':
           $ref: '#/components/responses/406'
         '409':
@@ -600,6 +606,8 @@ paths:
           $ref: '#/components/responses/Language'
         '401':
           $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
         '406':
           $ref: '#/components/responses/406'
         '409':
@@ -742,6 +750,8 @@ paths:
           $ref: '#/components/responses/Publisher'
         '401':
           $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
         '406':
           $ref: '#/components/responses/406'
         '409':
@@ -884,6 +894,8 @@ paths:
           $ref: '#/components/responses/Book'
         '401':
           $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
         '406':
           $ref: '#/components/responses/406'
         '409':
