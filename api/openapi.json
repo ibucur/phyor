@@ -2081,8 +2081,9 @@
 				"name": "authorization",
 				"in": "header"
 			}
-		},
+		}
 	},
-	"security": []
+	"security": [
 
+	]
 }

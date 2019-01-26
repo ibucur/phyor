@@ -65,6 +65,9 @@ console.log(`Worker has been started`);
 let helmet = require('helmet');
 
 const app = createExpressServer();
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../openapi.json');
+
 app.use(helmet());
 
 app.use(bodyParser.json({limit: '20mb'}));
@@ -122,12 +125,10 @@ useExpressServer( app,
 
     });
 
-
+app.use('/', swaggerUi.serve);
 app
 
-    .get('/', function(req, res){
-        res.send('Hello World');
-    })
+    .get('/', swaggerUi.setup(swaggerDocument))
 
     .get('/test', function(req, res){
         res.send('Test Address is working.. again');
