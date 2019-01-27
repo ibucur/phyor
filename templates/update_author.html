@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <link rel="stylesheet" type="text/css" href="../static/css/mystyle.css">
 </head>
 <body>
@@ -21,7 +22,7 @@
 					</div>
 					<ul class="nav navbar-nav">
 					  <li><a href="news.html">Home</a></li>
-					  <li><a href="authors.html">Authors</a></li>
+					  <li class="active"><a href="authors.html">Authors</a></li>
 					  <li><a href="books.html">Books</a></li>
 					  <li><a href="currencies.html">Currencies</a></li>
 					  <li><a href="genres.html">Genres</a></li>
@@ -30,7 +31,7 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 					  <li><a href="signUp.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-					  <li><button onclick="document.getElementById('login').style.display='block'"><span class="glyphicon glyphicon-log-in"></span> Login</button></li>
+					  <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 					</ul>
 				  </div>
 				</nav>
@@ -39,51 +40,43 @@
 	</header>
 	
 	<main>
-	<div class="container-fluid">
+		<div class="container-fluid">
+			<center>
+				<nav class="navbar navbar-inverse">
+				  <div class="container-fluid">
+					<ul class="nav navbar-nav">
+					  <li><a href="add_author.html">Add author</a></li>
+					  <li><a href="get_author.html">Search author</a></li>
+					  <li><a href="get_authors.html">See a list with authors</a></li>
+					  <li class="active"><a href="update_author.html">Update a specific author</a></li>
+					  <li><a href="get_author_books.html">See a list with author's books</a></li>
+					</ul>
+				  </div>
+				</nav>
+			</center>
+		</div>	
 		
-
-		<div id="login" class="modal">
-		  
-		  <form class="modal-content animate" action="index.html">
-			<div class="imgcontainer">
-			  <span onclick="document.getElementById('login').style.display='none'" class="close" title="Close Modal">&times;</span>
-			</div>
-
-			<div class="container">
-				<center>
-				  <label for="uname"><b>Username</b></label>
-				  <input type="text" placeholder="Enter Username" name="uname" required>
-
-				  <label for="psw"><b>Password</b></label>
-				  <input type="password" placeholder="Enter Password" name="psw" required>
-					
-				  <button type="submit">Login</button>
-				  <button type="button" onclick="document.getElementById('login').style.display='none'" class="cancelbtn">Cancel</button>
-
-				 </center>
-			</div>
-			<div class="container">
-				<center>
-				  <label>
-					<input type="checkbox" checked="checked" name="remember"> Remember me
-				  </label>
-				</center>
-			</div>
-		  </form>
+				
+		<div class="container-fluid">
+			<form class="updateAuthor" method = "post">
+				<div class="form-group">
+				  <label for="authorName">Name:</label>
+				  <input type="text" class="form-control" id="authorName" name="authorName" required>
+				</div>
+				<div class="form-group">
+				  <label for="wikidataUri">WikidataUri:</label>
+				  <input type="text" class="form-control" id="wikidataUri" name="wikidataUri" required>
+				</div>
+				<div class="form-group">
+				  <label for="resourceUri">ResourceUri:</label>
+				  <input type="text" class="form-control" id="resourceUri" name="resourceUri" required>
+				</div>
+				<div class="form-group">
+					<button id="submitBtn" class="btn btn-lg btn-primary btn-block" type="submit" value="Check Status">Update author</button>
+				</div>
+				 
+			</form>
 		</div>
-
-		<script>
-		// Get the modal
-		var modal = document.getElementById('login');
-
-		// When the user clicks anywhere outside of the modal, close it
-		window.onclick = function(event) {
-			if (event.target == modal) {
-				modal.style.display = "none";
-			}
-		}
-		</script>
-	</div>
 	</main>
 	
 	<footer>

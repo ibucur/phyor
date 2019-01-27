@@ -46,8 +46,8 @@
 				  <div class="container-fluid">
 					<ul class="nav navbar-nav">
 					  <li><a href="add_author.html">Add author</a></li>
-					  <li class="active"><a href="get_author.html">Search author</a></li>
-					  <li><a href="get_authors.html">See a list with authors</a></li>
+					  <li><a href="get_author.html">Search author</a></li>
+					  <li class="active"><a href="get_authors.html">See a list with authors</a></li>
 					  <li><a href="update_author.html">Update a specific author</a></li>
 					  <li><a href="get_author_books.html">See a list with author's books</a></li>
 					</ul>
@@ -57,17 +57,8 @@
 		</div>	
 		
 				
-		<div class="container-fluid">
-			<form class="getAuthor" method = "get" action="get_author2.html">
-				<div class="form-group">
-				  <label for="authorName">Type in the author's id:</label>
-				  <input type="text" class="form-control" id="authorName" name="authorName" required>
-				</div>
-				<div class="form-group">
-					<button id="submitBtn" class="btn btn-lg btn-primary btn-block" type="submit" value="Check Status">Get author</button>
-				</div>
-				 
-			</form>
+		<div class="container-fluid" id="ctn">
+			<center><div class="loader"></div></center>
 		</div>
 	</main>
 	
@@ -85,3 +76,35 @@
 	</footer>
 </body>
 </html>
+
+
+<script>
+	var authorCard = '<div class="card text-white bg-secondary" style="width: 20rem; float: left;padding: 2rem;border: 1px solid #c4c4c4; margin: 2rem;background: #F8F9FA;">'+
+			  '<div class="card-body">'+
+				'<h5 class="card-title" style="font-weight: bold;">{{name}}</h5>'+
+				'<p class="card-text"><a href="{{wikidataUri}}" target="_blank">View Author Wiki page</a>.</p>'+
+				'<center><a href="#" class="btn btn-primary">View Books</a></center>'+
+			  '</div>'+
+			'</div>';
+      $.ajax({
+        url: "https://ibucur.zego.ro/api/authors",
+        dataType: "json",
+        success: function(data) {
+        
+		console.log("DATA: " + JSON.stringify(data));
+		var ctn = '';
+		$.each( data, function( i, item ) {
+			var local = authorCard;
+			local = local.replace('{{name}}', item.name);
+			local = local.replace('{{wikidataUri}}', item.wikidataUri);
+			ctn += local;
+		});
+		$('#ctn').html(ctn);
+        },
+		error: function(err) {
+			$('#ctn').html('<center><h3 style="color: red;">'+JSON.parse(err.responseText).message+'</h3></center>');
+			console.log("ERROR: " + JSON.stringify(err));
+		}
+      });
+	    
+</script>
