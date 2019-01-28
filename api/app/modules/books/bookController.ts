@@ -14,6 +14,7 @@ import {isNullOrUndefined} from "util";
 import {BookRepository} from "./bookRepository";
 import {Book} from "../../entities/books";
 import { ResponseFormatter} from "../../helper/responseFormatter";
+import {BookSparqlRepository} from "./bookSparqlRepository";
 
 @Service()
 @Controller()
@@ -70,7 +71,7 @@ export class BookController {
         @QueryParam("resultsPerPage") resultsPerPage: number,
         @Res() response: any,
         @Req() request: any
-    ): Promise<Book> {
+    ): Promise<Book[]> {
         return BookRepository.findAll(pageNumber, resultsPerPage)
             .then(
                 (data) => {
@@ -121,5 +122,36 @@ export class BookController {
                 throw {error: ErrorCodes.resourceNotValid};
                 //return ErrorController.processError(ErrorCodes.resourceNotFound, request, response);
             });
+    }
+
+    @Get("/books/:bookId/recomandations")
+    async getBooksSameAuthor(
+        @Param("bookId") bookId: number,
+        @QueryParam("pageNumber") pageNumber: number,
+        @Res() response: any,
+        @Req() request: any
+    ): Promise<any> {
+
+        return await BookRepository.findOneById(bookId)
+            .then(
+                async (data) => {
+                    await data;
+                    let booksSameAuthor = await BookSparqlRepository.getBooksSameAuthor(data.author['@1'].id, bookId);
+                    let booksSameGenre = await BookSparqlRepository.getBooksSameGenre(data.genre['@1'].id, bookId);
+                    let booksSamePublisher = await BookSparqlRepository.getBooksSamePublisher(data.publisher['@1'].id, bookId);
+                    let booksSameLanguage = await BookSparqlRepository.getBooksSameLanguage(data.language['@1'].id, bookId);
+                    let books = {
+                       "sameAuthor": booksSameAuthor,
+                       "sameGenre": booksSameGenre,
+                       "samePublisher": booksSamePublisher,
+                       "sameLanguage": booksSameLanguage,
+                    };
+                    return Promise.resolve(ResponseFormatter.response(response, request, books,200, 'recomandations'));
+                })
+            .catch((err) => {
+                throw {error: ErrorCodes.resourceNotFound};
+            });
+
+
     }
 }

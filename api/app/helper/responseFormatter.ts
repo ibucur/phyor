@@ -6,7 +6,7 @@ const js2xmlparser = require("js2xmlparser");
 
 export class ResponseFormatter {
     public static removeXMLTransformDetails(data: any): any {
-        if (isNullOrUndefined(data["="])) return data;
+        if (isNullOrUndefined(data) || isNullOrUndefined(data["="])) return data;
         delete data["="];
         data["id"] = data["@1"]["id"];
         delete data["@1"];
@@ -24,6 +24,12 @@ export class ResponseFormatter {
                 if (!isNullOrUndefined(data[i]['language'])) data[i]['language'] = ResponseFormatter.removeXMLTransformDetails(data[i]['language']);
                 if (!isNullOrUndefined(data[i]['currency'])) data[i]['currency'] = ResponseFormatter.removeXMLTransformDetails(data[i]['currency']);
             }
+        }
+        else if (!isNullOrUndefined(data.sameAuthor) && !isNullOrUndefined(data.sameGenre) && !isNullOrUndefined(data.samePublisher) && !isNullOrUndefined(data.sameLanguage)) {
+            data.sameAuthor = ResponseFormatter.removeXMLTransformData(data.sameAuthor);
+            data.sameGenre = ResponseFormatter.removeXMLTransformData(data.sameGenre);
+            data.samePublisher = ResponseFormatter.removeXMLTransformData(data.samePublisher);
+            data.sameLanguage = ResponseFormatter.removeXMLTransformData(data.sameLanguage);
         }
         else {
             data = ResponseFormatter.removeXMLTransformDetails(data);

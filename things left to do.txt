@@ -1,8 +1,9 @@
 Ca mai avem asa:
 1. Ui
-DONE 2. Sparql server
-DONE 3. Routare sparql prin api ca sa avem autentificare pt anumite operatiuni
 4. Expunere in api partea de recomandari folosind sparql queries
-DONE 5. Modificat diagrama de arhitectura
 6. Modificat scholarly html si adaugat user manual pt ui.
 7. Film de prezentare
+
+DONE 2. Sparql server
+DONE 3. Routare sparql prin api ca sa avem autentificare pt anumite operatiuni
+DONE 5. Modificat diagrama de arhitectura

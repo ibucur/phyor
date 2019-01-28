@@ -16,7 +16,7 @@ export class BookRepository {
         return getRepository(Book).save(data);
     }
 
-    private static fillOneResourceURI(data: Book|any):Book|any {
+    public static fillOneResourceURI(data: Book|any):Book|any {
         data["resourceUri"] = process.env.HOST + '/api/books/'+data["id"];
         data["="] = "book";
         data["@1"] = {
