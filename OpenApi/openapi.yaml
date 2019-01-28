@@ -930,6 +930,39 @@ paths:
           required: true
           schema:
             type: number
+  '/books/{bookId}/recomandations':
+    get:
+      tags:
+        - books
+      summary: Get recommendations for the specified book using SPARQL in the backside.
+      description: ''
+      operationId: getBookRecommendations
+      responses:
+        '200':
+          $ref: '#/components/responses/BookRecommendations'
+        '404':
+          $ref: '#/components/responses/404'
+        '501':
+          $ref: '#/components/responses/501'
+      parameters:
+        - name: Accept
+          in: header
+          description: Specifies the output format. Only application/xml and application/json is supported. It another format is requested then the application/json format will be used.
+          required: false
+          schema:
+            type: string
+        - name: bookId
+          in: path
+          description: Specifies the unique it of a book to get the details about.
+          required: true
+          schema:
+            type: number
+        - name: recommendCategoryBooksNo
+          in: query
+          description: Specifies how many books will be recommended for every category.
+          required: false
+          schema:
+            type: number
   /users/login:
     post:
       tags:
@@ -1161,6 +1194,35 @@ components:
           description: Specifies the local resource unique uri
       xml:
         name: book
+    BookRecommendations:
+      type: object
+      properties:
+        sameAuthor:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+          xml:
+            name: sameAuthor
+        sameGenre:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+          xml:
+            name: sameGenre
+        samePublisher:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+          xml:
+            name: samePublisher
+        sameLanguage:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+          xml:
+            name: sameLanguage
+      xml:
+        name: recommendations
     BookList:
       description: List of books
       type: array
@@ -1404,6 +1466,15 @@ components:
         application/xml:
           schema:
             $ref: '#/components/schemas/BookList'
+    BookRecommendations:
+      description: List of book recommendations for the specified book using SPARQL in the backside.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookRecommendations'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/BookRecommendations'
     Currency:
       description: Currency response
       content:
