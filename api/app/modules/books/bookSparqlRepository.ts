@@ -67,7 +67,7 @@ export class BookSparqlRepository {
         return Promise.resolve(books);
     }
 
-    public static getBooksSameAuthor(authorId: number, ignoredBookId: number = 0): Promise<Book[]> {
+    public static getBooksSameAuthor(authorId: number, ignoredBookId: number = 0, recommendCategoryBooksNo: number = 3): Promise<Book[]> {
         const sparql = require('sparql');
         let client = new sparql.Client('https://ibucur.zego.ro/d2r/sparql');
         let query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
@@ -115,7 +115,7 @@ export class BookSparqlRepository {
             "?language vocab:languages_sameAs ?languageWikidataUri .\n" +
             "\n" +
             "filter (?authorId = "+authorId+"  && ?bookId != "+ignoredBookId+")\n" +
-            "} limit 3";
+            "} limit "+recommendCategoryBooksNo;
 
         return new Promise((resolve, reject) => {
             client.query(query, (err, res) => {
@@ -130,7 +130,7 @@ export class BookSparqlRepository {
         });
     }
 
-    public static getBooksSameGenre(genreId: number, ignoredBookId: number = 0): Promise<Book[]> {
+    public static getBooksSameGenre(genreId: number, ignoredBookId: number = 0, recommendCategoryBooksNo: number = 3): Promise<Book[]> {
         const sparql = require('sparql');
         let client = new sparql.Client('https://ibucur.zego.ro/d2r/sparql');
         let query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
@@ -178,7 +178,7 @@ export class BookSparqlRepository {
             "?language vocab:languages_sameAs ?languageWikidataUri .\n" +
             "\n" +
             "filter (?genreId = "+genreId+"  && ?bookId != "+ignoredBookId+")\n" +
-            "} limit 3";
+            "} limit "+recommendCategoryBooksNo;
 
         return new Promise((resolve, reject) => {
             client.query(query, (err, res) => {
@@ -193,7 +193,7 @@ export class BookSparqlRepository {
         });
     }
 
-    public static getBooksSamePublisher(publisherId: number, ignoredBookId: number = 0): Promise<Book[]> {
+    public static getBooksSamePublisher(publisherId: number, ignoredBookId: number = 0, recommendCategoryBooksNo: number = 3): Promise<Book[]> {
         const sparql = require('sparql');
         let client = new sparql.Client('https://ibucur.zego.ro/d2r/sparql');
         let query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
@@ -241,7 +241,7 @@ export class BookSparqlRepository {
             "?language vocab:languages_sameAs ?languageWikidataUri .\n" +
             "\n" +
             "filter (?publisherId = "+publisherId+"  && ?bookId != "+ignoredBookId+")\n" +
-            "} limit 3";
+            "} limit "+recommendCategoryBooksNo;
 
         return new Promise((resolve, reject) => {
             client.query(query, (err, res) => {
@@ -256,7 +256,7 @@ export class BookSparqlRepository {
         });
     }
 
-    public static getBooksSameLanguage(languageId: number, ignoredBookId: number = 0): Promise<Book[]> {
+    public static getBooksSameLanguage(languageId: number, ignoredBookId: number = 0, recommendCategoryBooksNo: number = 3): Promise<Book[]> {
         const sparql = require('sparql');
         let client = new sparql.Client('https://ibucur.zego.ro/d2r/sparql');
         let query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
@@ -304,7 +304,7 @@ export class BookSparqlRepository {
             "?language vocab:languages_sameAs ?languageWikidataUri .\n" +
             "\n" +
             "filter (?languageId = "+languageId+"  && ?bookId != "+ignoredBookId+")\n" +
-            "} limit 3";
+            "} limit "+recommendCategoryBooksNo;
 
         return new Promise((resolve, reject) => {
             client.query(query, (err, res) => {

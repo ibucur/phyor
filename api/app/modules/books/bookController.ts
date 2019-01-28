@@ -127,7 +127,7 @@ export class BookController {
     @Get("/books/:bookId/recomandations")
     async getBooksSameAuthor(
         @Param("bookId") bookId: number,
-        @QueryParam("pageNumber") pageNumber: number,
+        @QueryParam("recommendCategoryBooksNo") recommendCategoryBooksNo: number,
         @Res() response: any,
         @Req() request: any
     ): Promise<any> {
@@ -136,10 +136,10 @@ export class BookController {
             .then(
                 async (data) => {
                     await data;
-                    let booksSameAuthor = await BookSparqlRepository.getBooksSameAuthor(data.author['@1'].id, bookId);
-                    let booksSameGenre = await BookSparqlRepository.getBooksSameGenre(data.genre['@1'].id, bookId);
-                    let booksSamePublisher = await BookSparqlRepository.getBooksSamePublisher(data.publisher['@1'].id, bookId);
-                    let booksSameLanguage = await BookSparqlRepository.getBooksSameLanguage(data.language['@1'].id, bookId);
+                    let booksSameAuthor = await BookSparqlRepository.getBooksSameAuthor(data.author['@1'].id, bookId, recommendCategoryBooksNo);
+                    let booksSameGenre = await BookSparqlRepository.getBooksSameGenre(data.genre['@1'].id, bookId, recommendCategoryBooksNo);
+                    let booksSamePublisher = await BookSparqlRepository.getBooksSamePublisher(data.publisher['@1'].id, bookId, recommendCategoryBooksNo);
+                    let booksSameLanguage = await BookSparqlRepository.getBooksSameLanguage(data.language['@1'].id, bookId, recommendCategoryBooksNo);
                     let books = {
                        "sameAuthor": booksSameAuthor,
                        "sameGenre": booksSameGenre,
