@@ -53,6 +53,9 @@
 			<div id="books">
 				<div style="text-align: center;"><div class="loader"></div></div>
 			</div>
+			<div id="bookDetails">
+				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
 			<div id="currencies">
 				<div style="text-align: center;"><div class="loader"></div></div>
 			</div>
@@ -151,23 +154,36 @@
 		</div>
 	</div>
 	<div id="bookDetailsCard">
-		<div class="card text-white bg-secondary" style="width: 50rem; float: left;padding: 1rem;border: 1px solid #c4c4c4; margin: 2rem;background: #F8F9FA;">
-			<div class="card-body" style="float: left;">
-				<img class="card-img-top" src="{{imageUri}}" alt="{{title}} image">
-				<h5 class="card-title" style="font-weight: bold;text-align: center;">{{title}}</h5>
-				<p class="card-text">
-					Author: {{author}}<br />
-					ISBN: {{isbn}}<br />
-					Publisher: {{publisher}}<br />
-					Language: {{language}}<br />
-					Pages: {{pageNo}} <br />
-				</p>
-				<p class="card-text">Price: {{price}} {{shortcut}}</p>
-				<p class="card-text">{{plot}}</p>
-				<p class="card-text"><a href="{{wikidataUri}}" target="_blank">View Currency Wiki page</a>.</p>
-				<!--<div style="text-align: center;"><a href="#" class="btn btn-primary">View Books</a></div>-->
-			</div>
-		</div>
+		<h2 class="card-title" style="font-weight: bold;text-align: center;">{{title}}</h2>
+		<img class="booksCardImageDetails" src="{{imageUri}}" alt="{{title}} image">
+		<p class="card-text">
+			Author: {{author}}<br />
+			ISBN: {{isbn}}<br />
+			Publisher: {{publisher}}<br />
+			Language: {{language}}<br />
+			Pages: {{pageNo}} <br />
+		</p>
+		<p class="card-text">Price: {{price}} {{shortcut}}</p>
+		<p class="card-text">{{plot}}</p>
+		<div class="clearfix"></div>
+		<h4>Other Recommended Books</h4>
+		<p class="sameBookTitle">By Same Author</p>
+		<div class="clearfix"></div>
+		<p>{{sameAuthor}}</p>
+		<div class="clearfix"></div>
+		<p class="sameBookTitle">By Same Genre</p>
+		<div class="clearfix"></div>
+		<p>{{sameGenre}}</p>
+		<div class="clearfix"></div>
+		<p class="sameBookTitle">By Same Language</p>
+		<div class="clearfix"></div>
+		<p>{{sameLanguage}}</p>
+		<div class="clearfix"></div>
+		<p class="sameBookTitle">By Same Publisher</p>
+		<div class="clearfix"></div>
+		<p>{{samePublisher}}</p>
+		<div class="clearfix"></div>
+
 	</div>
 
 

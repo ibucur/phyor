@@ -161,3 +161,15 @@ span.psw {
   float: left;
   margin-right: 1rem;
 }
+
+.booksCardImageDetails {
+  height: 300px;
+  width: 180px;
+  float: left;
+  margin-right: 1rem;
+}
+
+.sameBookTitle {
+  font-size: 1.6rem;
+  font-weight: bold;
+}

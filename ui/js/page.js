@@ -186,3 +186,123 @@ function showBooks() {
 		}
 	});
 }
+
+function showBookDetails(bookId) {
+	$("#ctn").children().hide();
+	$("#bookDetails")
+		.html('<div style="text-align: center;"><div class="loader"></div></div>')
+		.show();
+
+	var card = $("#bookDetailsCard").html();
+	$.ajax({
+		url: "https://ibucur.zego.ro/api/books/"+bookId,
+		dataType: "json",
+		success: function(data) {
+
+			//console.log("DATA: " + JSON.stringify(data));
+			var ctn = '';
+
+				var local = card;
+				local = local.replace('{{title}}', data.title);
+				local = local.replace('{{title}}', data.title);
+				local = local.replace('{{author}}', data.author.name);
+				local = local.replace('{{shortcut}}', data.currency.shortcut);
+				local = local.replace('{{imageUri}}', data.imageUri);
+				local = local.replace('{{price}}', data.price);
+				local = local.replace('{{language}}', data.language.name);
+				local = local.replace('{{bookId}}', data.id);
+				local = local.replace('{{plot}}', data.plot);
+				local = local.replace('{{isbn}}', data.isbn);
+				local = local.replace('{{pageNo}}', data.pagesNo);
+				local = local.replace('{{publisher}}', data.publisher.name);
+				ctn += local;
+
+			$.ajax({
+				url: "https://ibucur.zego.ro/api/books/"+bookId+"/recomandations",
+				dataType: "json",
+				success: function(data) {
+
+					//console.log("DATA: " + JSON.stringify(data));
+					var sameAuthor = '';
+					if (data.sameAuthor.length == 0) sameLanguage = 'No Books Found';
+					$.each( data.sameAuthor, function( i, item ) {
+						var local = $("#bookCard").html();
+						local = local.replace('{{title}}', item.title);
+						local = local.replace('{{title}}', item.title);
+						local = local.replace('{{author}}', item.author.name);
+						local = local.replace('{{shortcut}}', item.currency.shortcut);
+						local = local.replace('{{imageUri}}', item.imageUri);
+						local = local.replace('{{price}}', item.price);
+						local = local.replace('{{language}}', item.language.name);
+						local = local.replace('{{bookId}}', item.id);
+						sameAuthor += local;
+					});
+					var sameGenre = '';
+					if (data.sameGenre.length == 0) sameLanguage = 'No Books Found';
+					$.each( data.sameGenre, function( i, item ) {
+						var local = $("#bookCard").html();
+						local = local.replace('{{title}}', item.title);
+						local = local.replace('{{title}}', item.title);
+						local = local.replace('{{author}}', item.author.name);
+						local = local.replace('{{shortcut}}', item.currency.shortcut);
+						local = local.replace('{{imageUri}}', item.imageUri);
+						local = local.replace('{{price}}', item.price);
+						local = local.replace('{{language}}', item.language.name);
+						local = local.replace('{{bookId}}', item.id);
+						sameGenre += local;
+					});
+
+					var samePublisher = '';
+					if (data.samePublisher.length == 0) sameLanguage = 'No Books Found';
+					$.each( data.samePublisher, function( i, item ) {
+						var local = $("#bookCard").html();
+						local = local.replace('{{title}}', item.title);
+						local = local.replace('{{title}}', item.title);
+						local = local.replace('{{author}}', item.author.name);
+						local = local.replace('{{shortcut}}', item.currency.shortcut);
+						local = local.replace('{{imageUri}}', item.imageUri);
+						local = local.replace('{{price}}', item.price);
+						local = local.replace('{{language}}', item.language.name);
+						local = local.replace('{{bookId}}', item.id);
+						samePublisher += local;
+					});
+					var sameLanguage = '';
+					if (data.sameLanguage.length == 0) sameLanguage = 'No Books Found';
+					$.each( data.sameLanguage, function( i, item ) {
+						var local = $("#bookCard").html();
+						local = local.replace('{{title}}', item.title);
+						local = local.replace('{{title}}', item.title);
+						local = local.replace('{{author}}', item.author.name);
+						local = local.replace('{{shortcut}}', item.currency.shortcut);
+						local = local.replace('{{imageUri}}', item.imageUri);
+						local = local.replace('{{price}}', item.price);
+						local = local.replace('{{language}}', item.language.name);
+						local = local.replace('{{bookId}}', item.id);
+						sameLanguage += local;
+					});
+
+					ctn = ctn.replace('{{sameAuthor}}', sameAuthor);
+					ctn = ctn.replace('{{sameGenre}}', sameGenre);
+					ctn = ctn.replace('{{sameLanguage}}', sameLanguage);
+					ctn = ctn.replace('{{samePublisher}}', samePublisher);
+					$('#bookDetails').html(ctn);
+				},
+				error: function(err) {
+					ctn = ctn.replace('{{sameAuthor}}', 'No Books Found');
+					ctn = ctn.replace('{{sameGenre}}', 'No Books Found');
+					ctn = ctn.replace('{{sameLanguage}}', 'No Books Found');
+					ctn = ctn.replace('{{samePublisher}}', 'No Books Found');
+					$('#bookDetails').html(ctn);
+
+					console.log("ERROR: " + JSON.stringify(err));
+				}
+			});
+		},
+		error: function(err) {
+			$('#bookDetails').html('<h2>Book Details Page</h2>'+$("#errorDiv").html().replace('{{errorMessage}}',JSON.parse(err.responseText).message));
+			console.log("ERROR: " + JSON.stringify(err));
+		}
+	});
+}
+
+
