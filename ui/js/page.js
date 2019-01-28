@@ -1,5 +1,7 @@
 var authorization = '';
+var userName = '';
 if ($.cookie("authorization")) authorization = $.cookie("authorization");
+if ($.cookie("userName")) userName = $.cookie("userName");
 
 function showAuthors() {
 	$("#ctn").children().hide();
