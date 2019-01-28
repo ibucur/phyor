@@ -1818,7 +1818,7 @@
 						"format": "int64",
 						"description": "Unique identification number for the user"
 					},
-					"name": {
+					"fullName": {
 						"type": "string",
 						"format": "varchar",
 						"description": "The user full name"
