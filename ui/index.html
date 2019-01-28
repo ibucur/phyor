@@ -29,7 +29,8 @@
 					  <li><a href="#" onclick="showPublishers()">Publishers</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-					  <li><a href="#" onclick="showLogin()"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					  <li id="btnLogin"><a href="#" onclick="showLogin()"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					  <li id="btnLogout" style="display: none;"><a href="#" onclick="logout()"><span class="glyphicon glyphicon-log-in"></span> Login</a><span id="nameOfUser"></span></li>
 					</ul>
 				  </div>
 				</nav>
@@ -69,6 +70,25 @@
 			</div>
 			<div id="publishers">
 				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
+			<div id="login" style="display: none;">
+				<div style="text-align: center;width: 100%;">
+					<div id="loginErrorMsg"></div>
+					<div style="text-align: left;width: 40rem;margin: 0 auto;">
+						<form>
+							<label for="email"><b>Email</b></label><br />
+							<input type="text" style="width: 20rem;" placeholder="Enter Email" id="email" required>
+							<br />
+							<label for="password"><b>Password</b></label><br />
+							<input type="password" style="width: 20rem;" placeholder="Enter Password" id="password" required>
+							<br />
+							<br />
+							<a href="#" class="btn btn-warning"  style="margin-right: 5rem;" onclick="showHome()">Cancel</a>
+							<a href="#" class="btn btn-primary" onclick="loginAction()">Login</a>
+
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
 

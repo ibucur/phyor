@@ -52,6 +52,7 @@ export class UserController {
         return UserRepository.findOneByEmailAndPassword(loginDetails.email, loginDetails.password)
             .then(async (user) => {
                 //console.log(util.inspect(user));
+                await user;
                 if (user && user instanceof User) {
                     return await ResponseFormatter.response(response, request, await UserAuthorization.getUserToken(user));
                 }

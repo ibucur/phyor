@@ -2,6 +2,51 @@ var authorization = '';
 var userName = '';
 if ($.cookie("authorization")) authorization = $.cookie("authorization");
 if ($.cookie("userName")) userName = $.cookie("userName");
+if (userName.length > 1) {
+	$("#btnLogin").hide();
+	$("#btnLogout").show();
+	$("#nameOfUser").html('<br />'+user);
+}
+
+function logout() {
+	$.removeCookie("authorization");
+	$.removeCookie("userName");
+	authorization = '';
+	userName = '';
+	showHome();
+}
+
+function login(user, token) {
+	$.cookie("authorization", token);
+	$.cookie("userName", user);
+	authorization = token;
+	userName = user;
+	$("#nameOfUser").html('<br />'+user);
+	showHome();
+}
+
+function showLogin() {
+	$("#ctn").children().hide();
+	$("#login").show();
+}
+
+function loginAction() {
+	console.log({email: $("#email").val(), password: $("#password").val()});
+	$.ajax({
+		url: "https://ibucur.zego.ro/api/users/login",
+		method: "POST",
+
+		data: {email: $("#email").val(), password: $("#password").val()},
+		dataType: "json",
+		success: function(data) {
+			login(data.user.name, data.token);
+		},
+		error: function(err) {
+			$('#loginErrorMsg').html(JSON.parse(err.responseText).message);
+			console.log("ERROR: " + JSON.stringify(err));
+		}
+	});
+}
 
 function showAuthors() {
 	$("#ctn").children().hide();
