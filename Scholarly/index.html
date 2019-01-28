@@ -66,22 +66,15 @@
             Phyor (Physical Object Recommender) is a multi-platform application able to identify various (categories of)
             physical objects using its numerical symbol in order to recommend alternatives of interest for a specific user.
             <br />
-            The application base inputs are the knowledge base (Wikidata) and various third party APIs for the general products information.
+            The application base inputs are the knowledge base (Open Source D2R) and various third party APIs for the general products information (books).
         </p>
-        <p>
-            Users are able to navigate to a specific product based on categories and then see a product page.
-            The format can be specified and it can vary from HTML, JSON-LD, RDF, e.g. and is considered the product page.
-            <br />
-            It will contain as well details about various similar products or versions of the current product including the
-            link to the similar/recommended product.
-        </p>
-        <p>
-            As mentioned prior, each product page can be presented in various ways. The default one is HTML and
-            it includes the Facebook OWL data in order to allow the social network to properly read and display the data
-            when a link is included in their network.
-            <br />
-            Option to save the page on the local device is also available.
-        </p>
+          <p>The project implementation consists on a 3 different components:<br />
+            <li>Restful API</li>
+            <li>D2R Open Source Semantic Web Server</li>
+            <li>User Interface</li>
+          </p>
+
+
       </section>
       <section typeof="sa:MaterialsAndMethods" id="mainArchitecture">
         <h2>Application Architecture</h2>
@@ -89,20 +82,38 @@
             The high level software architecture for the Phyor (Physical Object Recommender) application is described below.
         </p>
         <p>
-        	The backend of the Phyor (Physical Object Recommender) application is composed of several modules, each with a well-defined purpose.
-        	For example, the 3rd party products retriever module is responsible only for fetching the latest update for a product.
+        	The backend Restful API of the Phyor (Physical Object Recommender) application is composed of several modules, each with a well-defined purpose.
+        	<strong>Authors</strong>, <strong>Books</strong>, <strong>Genres</strong>, <strong>Languages</strong>, <strong>Currencies</strong>, <strong>Publishers</strong>, <strong>Users</strong>, <strong>Error</strong>, <strong>Response</strong>
 			<br />
-			Another module is the products which exposes api enpoints and calls the sparql service in order to generate the response for the requested product id.
+            Each module implements his own repository in order to communicate with the storage system or with the SPARQL endpoint.
         </p>
 		<p>
-			The sparql service endpoint gets the product data by calling the 3rd party product retriever module.
+			The sparql service endpoint gets the product data from the MySQL database using some translation mapping models needed by D2R open source software.
 		</p>
 		<p>
-			The categories module manages the categories of products in order to be able to locally group the products.
+			The authors module manages the authors.
 		</p>
 		<p>
-			The router manager module is responsible to properly load the correct controller class able to satisfy the request. It is not designed in the diagram but this module controls the output format as well.
+			The books module manages the books and books recommendations.
 		</p>
+          <p>
+              The genres module manages the genres the books are available in.
+          </p>
+          <p>
+              The languages module manages the languages the books are available in.
+          </p>
+          <p>
+              The currencies module manages the currencies the books price is available in.
+          </p>
+          <p>
+              The publishers module manages the publishers the books are provided by.
+          </p>
+          <p>
+              The users module manages the users, authorizations jwt tokens and controls the access rights to all update/add API methods.
+          </p>
+          <p>Error module is responsible with properly return of a thrown error</p>
+          <p>Response module is responsible with properly returning the message in the requested format: application/json, application/xml</p>
+
 		<p>
 		    The Phyor (Physical Object Recommender) application's hight level software architecture is highlighted in the following diagram.
 		    <img src="images/Phyor SOA.svg" width="1234" height="776">
@@ -110,24 +121,51 @@
 		<p>
 			The OpenAPI specification for the Phyor (Physical Object Recommender) application can be found here:
         	<ul>
-				<li><a href="../OpenApi/swagger.json"> JSON Format </a>
-				<li><a href="../OpenApi/swagger.yaml"> XML Format </a>
+				<li><a href="../OpenApi/openapi.json"> JSON Format </a>
+				<li><a href="../OpenApi/openapi.yaml"> XML Format </a>
         	</ul>
 		</p>
       </section>
      <section typeof="sa:MaterialsAndMethods" id="mainFlow">
          <h2>Main flow</h2>
-         <p>
-         	To begin with, the end user will first make a http get call to the <code>/categories</code> endpoint which will display the possible categories of the products.
+         <h4>User Interface</h4>
+         <p>The end user will get access to the user interface where he will be able to navigate through authors, genres, books and recommendations, etc. in order to view the details about them.</p>
+         <p>Once the user is logging in, it will have access to other functionality like add/update a resource.</p>
+         <p>Bellow is described the usage flow:</p>
+         <p><img src="images/ui1.jpg" width="1234"></p>
+         <p><img src="images/ui2.jpg" width="1234"></p>
+         <p><img src="images/ui3.jpg" width="1234"></p>
+         <p><img src="images/ui4.jpg" width="1234"></p>
+         <p><img src="images/ui5.jpg" width="1234"></p>
+         <p><img src="images/ui6.jpg" width="1234"></p>
+         <p><img src="images/ui7.jpg" width="1234"></p>
+         <p><img src="images/ui8.jpg" width="1234"></p>
 
-			Also, he can use post method in order to upload a new category. For the moment, the route is not protected for unauthorized access but can easily be protected based on the source ip.
-         </p>
-         <p>
-            The user can check a specific product in order to get it's details by useing <code>/products/{productId}/{outputFormat}</code> route.
-            The productId is the unique product identification number and the output format is one of html, json, rdf.
-			However, if the user wants to receive only the product similarities, another sub-route is available by calling using the http get method the endpoint:
-			<code>/products/{productId}/similar/{outputFormat}</code> endpoint, the end user is presented with the latest trending news about the first 100 most popular cryptocurrencies.
-         </p>
+         <h4>D2R Open Source Semantic Web Server</h4>
+         <p>The D2R open source software was used in order to create a properly semantic web ontology, model, vocabulary, resources, etc. and it exposes the query service via SPARQL.</p>
+         <p>The D2R Server can be accessed at: <a href="https://ibucur.zego.ro/d2r/">https://ibucur.zego.ro/d2r/</a> and from there forward the user will be guided to what he can do.</p>
+         <p style="font-weight: bold">Security Note:</p>
+         <p>The D2R server accesses the same MySQL database and since via SPARQL an user will be able to make changes into the database, the update operations are controlled easily using a different database connection user with limited rights. This way, all the updates will need to be done using the API where the access control is very well defined.</p>
+        <p><img src="images/d2r1.jpg" width="1234"></p>
+        <p><img src="images/d2r2.jpg" width="1234"></p>
+        <p><img src="images/d2r3.jpg" width="1234"></p>
+
+         <h4>Restful API</h4>
+         <p>In order to be able to add books, there should be added first the genre, currency the price is provided in, language of the book, author details and the publisher information. There is a constrain which limits the options to add a book product without specifying all the required details.</p>
+         <p>The api exposes the following methods (described in detail using openApi 3.0.0 format by accessing <a href="https://ibucur.zego.ro/">https://ibucur.zego.ro/</a>) and are accessible in application/json or application/xml response format (controlled by Accept header of the request):</p>
+         <li><code>/authors</code>: POST http method to add an author, GET http method to get the list of authors.</li>
+         <li><code>/authors/:authorId</code>: PUT http method to update an author specified by :authorId, GET http method to get the :authorId author resource.</li>
+         <li><code>/currencies</code>: POST http method to add a currency, GET http method to get the list of currencies.</li>
+         <li><code>/currencies/:currencyId</code>: PUT http method to update a currency specified by :currencyId, GET http method to get the :currencyId currency resource.</li>
+         <li><code>/genres</code>: POST http method to add a genre, GET http method to get the list of genres.</li>
+         <li><code>/genres/:genreId</code>: PUT http method to update a genre specified by :genreId, GET http method to get the :genreId genre resource.</li>
+         <li><code>/languages</code>: POST http method to add a language, GET http method to get the list of languages.</li>
+         <li><code>/languages/:languageId</code>: PUT http method to update a language specified by :languageId, GET http method to get the :languageId language resource.</li>
+         <li><code>/publishers</code>: POST http method to add a publisher, GET http method to get the list of publishers.</li>
+         <li><code>/publishers/:publisherId</code>: PUT http method to update a publisher specified by :publisherId, GET http method to get the :publisherId publisher resource.</li>
+         <li><code>/books</code>: POST http method to add a book, GET http method to get the list of books.</li>
+         <li><code>/books/:bookId</code>: PUT http method to update a book specified by :bookId, GET http method to get the :bookId book resource.</li>
+         <li><code>/books/:bookId/recomandations</code>: GET http method to get the :bookId similar books recommendations by the same author, language, genre or publisher. This method uses 4 SPARQL queries in order to retrieve the list of recommendations and combines them into one response.</li>
          <p>
          	A note should be specified in order to know that the HTML version of a result includes the Facebook OWL data in order to properly be shown on the social network.
          </p>
@@ -135,15 +173,13 @@
       <section typeof="sa:Conclusion" id="conclusion">
         <h2>Conclusion</h2>
         <p>
-        	Phyor (Physical Object Recommender) is dependable of the wikidata information about the products in order to be able to show the similarities.
+        	Phyor (Physical Object Recommender) is dependable of the D2R data mapping models information about the database structure, foreign keys and constraints in order to be able to show the similarities. Also, by doing it, the search queries when a big database is used will perform much better since it will use the RDS query execution optimization and will require less memory since the full stored data will not be kept in the memory.
         </p>
 		<p>
-        	Even though the information which can be found on DBpedia and other websites can suffice
-        	as far as managing one's products goes, it is not tailored to satisfy everyone's needs. Phyor also provides various
-			details about a specific product and also some fairly similar alternatives about it.
+        	Even though the information about the books and other resources are not very complex, a sameAs OWL property (wikidataUri for API) which provides a link to the wikidata resource is available for more details. Up to this level, the project aim was to show the main functionality and working logic.
         </p>
 		<p>
-			It can be further extended by adding functionalities to include OWL data for other social networks (instagram, twitter) in order to make it share-friendly on other networks.
+			It can be further extended by adding functionality to include OWL data for other social networks (instagram, twitter) in order to make it share-friendly on other networks.
         </p>
       </section>
     </article>

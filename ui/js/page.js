@@ -17,6 +17,7 @@ function showAuthors() {
 			var ctn = '<h2>Authors Page</h2>';
 			$.each( data, function( i, item ) {
 				var local = authorCard;
+				local = local.replace('{{authorId}}', item.id);
 				local = local.replace('{{name}}', item.name);
 				local = local.replace('{{wikidataUri}}', item.wikidataUri);
 				ctn += local;
@@ -182,6 +183,42 @@ function showBooks() {
 		},
 		error: function(err) {
 			$('#books').html('<h2>Books Page</h2>'+$("#errorDiv").html().replace('{{errorMessage}}',JSON.parse(err.responseText).message));
+			console.log("ERROR: " + JSON.stringify(err));
+		}
+	});
+}
+
+function showAuthorBooks(authorId) {
+	$("#ctn").children().hide();
+	$("#books")
+		.html('<div style="text-align: center;"><div class="loader"></div></div>')
+		.show();
+
+	var card = $("#bookCard").html();
+	$.ajax({
+		url: "https://ibucur.zego.ro/api/authors/"+authorId+"/books",
+		dataType: "json",
+		success: function(data) {
+
+			//console.log("DATA: " + JSON.stringify(data));
+			var ctn = '<h2>{{author}} Books Page</h2>';
+			$.each( data, function( i, item ) {
+				var local = card;
+				local = local.replace('{{title}}', item.title);
+				local = local.replace('{{title}}', item.title);
+				local = local.replace('{{author}}', item.author.name);
+				ctn = ctn.replace('{{author}}', item.author.name);
+				local = local.replace('{{shortcut}}', item.currency.shortcut);
+				local = local.replace('{{imageUri}}', item.imageUri);
+				local = local.replace('{{price}}', item.price);
+				local = local.replace('{{language}}', item.language.name);
+				local = local.replace('{{bookId}}', item.id);
+				ctn += local;
+			});
+			$('#books').html(ctn);
+		},
+		error: function(err) {
+			$('#books').html('<h2>Author Books Page</h2>'+$("#errorDiv").html().replace('{{errorMessage}}',JSON.parse(err.responseText).message));
 			console.log("ERROR: " + JSON.stringify(err));
 		}
 	});
