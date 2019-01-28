@@ -5,7 +5,7 @@ if ($.cookie("userName")) userName = $.cookie("userName");
 if (userName.length > 1) {
 	$("#btnLogin").hide();
 	$("#btnLogout").show();
-	$("#nameOfUser").html('<br />'+user);
+	$("#nameOfUser").html(userName);
 }
 
 function logout() {
@@ -14,14 +14,18 @@ function logout() {
 	authorization = '';
 	userName = '';
 	showHome();
+	$("#btnLogout").hide();
+	$("#btnLogin").show();
 }
 
 function login(user, token) {
-	$.cookie("authorization", token);
-	$.cookie("userName", user);
+	$.cookie("authorization", token, {expire: 1});
+	$.cookie("userName", user, {expire: 1});
 	authorization = token;
 	userName = user;
-	$("#nameOfUser").html('<br />'+user);
+	$("#btnLogin").hide();
+	$("#btnLogout").show();
+	$("#nameOfUser").html(userName);
 	showHome();
 }
 
@@ -39,7 +43,7 @@ function loginAction() {
 		data: {email: $("#email").val(), password: $("#password").val()},
 		dataType: "json",
 		success: function(data) {
-			login(data.user.name, data.token);
+			login(data.user.fullName, data.token);
 		},
 		error: function(err) {
 			$('#loginErrorMsg').html(JSON.parse(err.responseText).message);
