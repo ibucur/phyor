@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Phyor</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="js/jquery.cookie.js"></script>
+  <link rel="stylesheet" type="text/css" href="static/css/mystyle.css">
+</head>
+<body>
+	<header>
+		<div class="container-fluid">
+			<div style="text-align: center;">
+				<nav class="navbar navbar-inverse">
+				  <div class="container">
+					<div class="navbar-header">
+					  <a class="navbar-brand" href="#" onclick="showHome()">Phyor</a>
+					</div>
+					<ul class="nav navbar-nav">
+					  <li><a href="#" onclick="showHome()">Home</a></li>
+					  <li><a href="#" onclick="showAuthors()">Authors</a></li>
+					  <li><a href="#" onclick="showBooks()">Books</a></li>
+					  <li><a href="#" onclick="showCurrencies()">Currencies</a></li>
+					  <li><a href="#" onclick="showGenres()">Genres</a></li>
+					  <li><a href="#" onclick="showLanguages()">Languages</a></li>
+					  <li><a href="#" onclick="showPublishers()">Publishers</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+					  <li><a href="#" onclick="showLogin()"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					</ul>
+				  </div>
+				</nav>
+			</div>
+		</div>
+	</header>
+	
+	<main>
+		<div class="container" id="ctn" style="margin-top:0;">
+			<div id="home">
+				<h2>Phyor WADe Project </h2>
+				<p>
+					Develop a multi-platform application able to identify various (categories of) physical objects – by using its numerical/graphical symbol/sign (e.g., several types of barcodes) – in order to recommend alternatives of interest for a specific user. These recommendations could depend on many factors: availability in other format (an ePub version of a printed book, the Blu-ray edition instead of DVD), language (i.e. different translations of a given work), price (for example, only expensive luxury products), quality (new vs. used, CD vs. SACD), similarity (other LP of a musical group), user preferences (only bottles and cans having a specific shape/color, food without preservatives and meat). New functionalities will be implemented as extensions (modules) – provide at least 2 new features – i.e. support for actions like sharing a recommended object on a popular social network or saving the URL on Pocket. All significant information will be accessed by a SPARQL endpoint. You can use, among others, Open Food Facts, Wikidata, Virtual International Authority File.</p>
+
+					<p>The project backend api can be accessed at: <a href="https://ibucur.zego.ro/api/">https://ibucur.zego.ro/api/</a></p>
+					<p>The project backend api documentation can be accessed at: <a href="https://ibucur.zego.ro/">https://ibucur.zego.ro/</a></p>
+			</div>
+			<div id="authors">
+				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
+			<div id="books">
+				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
+			<div id="currencies">
+				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
+			<div id="genres">
+				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
+			<div id="languages">
+				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
+			<div id="publishers">
+				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
+		</div>
+
+		
+	</main>
+	
+	<footer>
+		<div class="container">
+			
+			<div style="text-align: center;">
+				<p>Developed by: Bucur Irinel & Bantu Anca</p>
+				<p>Contact information: <a href="mailto:irinel.bucur@gmail.com">
+				irinel.bucur@gmail.com;
+				<a href="mailto:bantu_anca@yahoo.com">
+				bantu_anca@yahoo.com</a>.</p>
+				<p>&#169; infoiasi wade 2019</p>
+			</div>
+		</div>
+	</footer>
+
+<div style="display: none;">
+	<div id="errorDiv"><div style="text-align: center;"><h3 style="color: red;">{{errorMessage}}</h3></div></div>
+	<div id="authorCard">
+		<div class="card text-white bg-secondary" style="width: 25rem; float: left;padding: 1rem;border: 1px solid #c4c4c4; margin: 2rem;background: #F8F9FA;">
+			<div class="card-body">
+				<h5 class="card-title" style="font-weight: bold;text-align: center;">{{name}}</h5>
+				<p class="card-text"><a href="{{wikidataUri}}" target="_blank">View Author Wiki page</a>.</p>
+				<div style="text-align: center;"><a href="#" class="btn btn-primary">View Books</a></div>
+			</div>
+		</div>
+	</div>
+	<div id="genreCard">
+		<div class="card text-white bg-secondary" style="width: 25rem; float: left;padding: 1rem;border: 1px solid #c4c4c4; margin: 2rem;background: #F8F9FA;">
+			<div class="card-body">
+				<h5 class="card-title" style="font-weight: bold;text-align: center;">{{name}}</h5>
+				<p class="card-text"><a href="{{wikidataUri}}" target="_blank">View Genre Wiki page</a>.</p>
+				<!--<div style="text-align: center;"><a href="#" class="btn btn-primary">View Books</a></div>-->
+			</div>
+		</div>
+	</div>
+
+	<div id="languageCard">
+		<div class="card text-white bg-secondary" style="width: 25rem; float: left;padding: 1rem;border: 1px solid #c4c4c4; margin: 2rem;background: #F8F9FA;">
+			<div class="card-body">
+				<h5 class="card-title" style="font-weight: bold;text-align: center;">{{name}}</h5>
+				<p class="card-text"><a href="{{wikidataUri}}" target="_blank">View Language Wiki page</a>.</p>
+				<!--<div style="text-align: center;"><a href="#" class="btn btn-primary">View Books</a></div>-->
+			</div>
+		</div>
+	</div>
+
+	<div id="publisherCard">
+		<div class="card text-white bg-secondary" style="width: 30rem; float: left;padding: 1rem;border: 1px solid #c4c4c4; margin: 2rem;background: #F8F9FA;">
+			<div class="card-body">
+				<h5 class="card-title" style="font-weight: bold;text-align: center;">{{name}}</h5>
+				<p class="card-text"><a href="{{wikidataUri}}" target="_blank">View Publisher Wiki page</a>.</p>
+				<!--<div style="text-align: center;"><a href="#" class="btn btn-primary">View Books</a></div>-->
+			</div>
+		</div>
+	</div>
+
+	<div id="currencyCard">
+		<div class="card text-white bg-secondary" style="width: 30rem; float: left;padding: 1rem;border: 1px solid #c4c4c4; margin: 2rem;background: #F8F9FA;">
+			<div class="card-body">
+				<h5 class="card-title" style="font-weight: bold;text-align: center;">{{name}}</h5>
+				<p class="card-text">Currency Shortcut: {{currencyShortcut}}</p>
+				<p class="card-text"><a href="{{wikidataUri}}" target="_blank">View Currency Wiki page</a>.</p>
+				<!--<div style="text-align: center;"><a href="#" class="btn btn-primary">View Books</a></div>-->
+			</div>
+		</div>
+	</div>
+
+	<div id="bookCard">
+		<div class="card text-white bg-secondary" style="width: 35rem; float: left;padding: 0.5rem;border: 1px solid #c4c4c4; margin: 1rem;background: #F8F9FA;">
+			<div class="card-body">
+				<img class="booksCardImage" src="{{imageUri}}" alt="{{title}} image">
+				<h5 class="card-title" style="font-weight: bold;text-align: center;height: 5rem;">{{title}}</h5>
+				<p class="card-text">
+					Author: {{author}}<br />
+					Language: {{language}}<br />
+				</p>
+				<p class="card-text">Price: {{price}} {{shortcut}}</p>
+				<div style="text-align: center;"><a href="#" class="btn btn-primary" onclick="showBookDetails({{bookId}})">View Book Details</a></div>
+			</div>
+		</div>
+	</div>
+	<div id="bookDetailsCard">
+		<div class="card text-white bg-secondary" style="width: 50rem; float: left;padding: 1rem;border: 1px solid #c4c4c4; margin: 2rem;background: #F8F9FA;">
+			<div class="card-body" style="float: left;">
+				<img class="card-img-top" src="{{imageUri}}" alt="{{title}} image">
+				<h5 class="card-title" style="font-weight: bold;text-align: center;">{{title}}</h5>
+				<p class="card-text">
+					Author: {{author}}<br />
+					ISBN: {{isbn}}<br />
+					Publisher: {{publisher}}<br />
+					Language: {{language}}<br />
+					Pages: {{pageNo}} <br />
+				</p>
+				<p class="card-text">Price: {{price}} {{shortcut}}</p>
+				<p class="card-text">{{plot}}</p>
+				<p class="card-text"><a href="{{wikidataUri}}" target="_blank">View Currency Wiki page</a>.</p>
+				<!--<div style="text-align: center;"><a href="#" class="btn btn-primary">View Books</a></div>-->
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+</body>
+</html>
+
+<script src="js/page.js"></script>
