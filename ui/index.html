@@ -53,22 +53,40 @@
 			<div id="authors">
 				<div style="text-align: center;"><div class="loader"></div></div>
 			</div>
+			<div id="authorsListContainer">
+				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
 			<div id="books">
 				<div style="text-align: center;"><div class="loader"></div></div>
 			</div>
 			<div id="bookDetails">
 				<div style="text-align: center;"><div class="loader"></div></div>
 			</div>
+			<div id="booksListContainer">
+				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
 			<div id="currencies">
+				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
+			<div id="currenciesListContainer">
 				<div style="text-align: center;"><div class="loader"></div></div>
 			</div>
 			<div id="genres">
 				<div style="text-align: center;"><div class="loader"></div></div>
 			</div>
+			<div id="genresListContainer">
+				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
 			<div id="languages">
 				<div style="text-align: center;"><div class="loader"></div></div>
 			</div>
+			<div id="languagesListContainer">
+				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
 			<div id="publishers">
+				<div style="text-align: center;"><div class="loader"></div></div>
+			</div>
+			<div id="publishersListContainer">
 				<div style="text-align: center;"><div class="loader"></div></div>
 			</div>
 			<div id="login" style="display: none;">
@@ -205,12 +223,240 @@
 		<div class="clearfix"></div>
 		<p>{{samePublisher}}</p>
 		<div class="clearfix"></div>
+	</div>
 
+	<div id="authorsList" style="margin-top: 10rem;">
+		<h2>Authors Management</h2>
+		{{contentList}}
+		<div style="text-align: center;"><a href="#" class="btn btn-primary" onclick="$('#authorEditModal').modal('show');$('#frmAuthorId').val('');$('#frmAuthorName').val('');$('#frmAuthorWikidataUri').val('');">Add Author</a></div>
+	</div>
+	<div id="genresList" style="margin-top: 10rem;">
+		<h2>Genres Management</h2>
+		{{contentList}}
+		<div style="text-align: center;"><a href="#" class="btn btn-primary" onclick="$('#genreEditModal').modal('show');$('#frmGenreId').val('');$('#frmGenreName').val('');$('#frmGenreWikidataUri').val('');">Add Genre</a></div>
+	</div>
+	<div id="publishersList" style="margin-top: 10rem;">
+		<h2>Publishers Management</h2>
+		{{contentList}}
+		<div style="text-align: center;"><a href="#" class="btn btn-primary" onclick="$('#publisherEditModal').modal('show');$('#frmPublisherId').val('');$('#frmPublisherName').val('');$('#frmPublisherWikidataUri').val('');">Add Publisher</a></div>
+	</div>
+	<div id="languagesList" style="margin-top: 10rem;">
+		<h2>Languages Management</h2>
+		{{contentList}}
+		<div style="text-align: center;"><a href="#" class="btn btn-primary" onclick="$('#languageEditModal').modal('show');$('#frmLanguageId').val('');$('#frmLanguageName').val('');$('#frmLanguageWikidataUri').val('');">Add Language</a></div>
+	</div>
+	<div id="currenciesList" style="margin-top: 10rem;">
+		<h2>Currencies Management</h2>
+		{{contentList}}
+		<div style="text-align: center;"><a href="#" class="btn btn-primary" onclick="$('#currencyEditModal').modal('show');$('#frmCurrencyId').val('');$('#frmCurrencyName').val('');$('#frmCurrencyWikidataUri').val('');$('#frmCurrencyShortcut').val('');">Add Currency</a></div>
+	</div>
+	<div id="booksList" style="margin-top: 10rem;">
+		<h2>Books Management</h2>
+		{{contentList}}
+		<div style="text-align: center;"><a href="#" class="btn btn-primary" onclick="$('#bookEditModal').modal('show');setBookEditFrmValues('','','','','','','','','','','','');">Add Book</a></div>
 	</div>
 
 
-
 </div>
+
+<div id="authorEditModal" class="modal fade" role="dialog" style="z-index: 2000;">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content" style="background: #ffffff;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" style="float: right; width:20px;margin-right: -10px;">&times;</button>
+				<h4 class="modal-title" style="margin-top: -10px;">Author Add/Edit</h4>
+			</div>
+			<div class="modal-body">
+
+				<form>
+					<input type="hidden" id="frmAuthorId">
+					<label for="frmAuthorName"><b>Full name</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Author Full Name" id="frmAuthorName" required>
+					<br /><br />
+					<label for="frmAuthorWikidataUri"><b>Author Wikidata Uri</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Wikidata Uri" id="frmAuthorWikidataUri" required>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a type="button" class="btn btn-primary" data-dismiss="modal">Close</a>
+				<a type="button" class="btn btn-success" onclick="saveAuthor();">Save</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="genreEditModal" class="modal fade" role="dialog" style="z-index: 2000;">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content" style="background: #ffffff;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" style="float: right; width:20px;margin-right: -10px;">&times;</button>
+				<h4 class="modal-title" style="margin-top: -10px;">Genre Add/Edit</h4>
+			</div>
+			<div class="modal-body">
+
+				<form>
+					<input type="hidden" id="frmGenreId">
+					<label for="frmGenreName"><b>Genre name</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Genre Name" id="frmGenreName" required>
+					<br /><br />
+					<label for="frmGenreWikidataUri"><b>Genre Wikidata Uri</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Wikidata Uri" id="frmGenreWikidataUri" required>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a type="button" class="btn btn-primary" data-dismiss="modal">Close</a>
+				<a type="button" class="btn btn-success" onclick="saveGenre();">Save</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="publisherEditModal" class="modal fade" role="dialog" style="z-index: 2000;">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content" style="background: #ffffff;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" style="float: right; width:20px;margin-right: -10px;">&times;</button>
+				<h4 class="modal-title" style="margin-top: -10px;">Publisher Add/Edit</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<input type="hidden" id="frmPublisherId">
+					<label for="frmPublisherName"><b>Publisher name</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Publisher Name" id="frmPublisherName" required>
+					<br /><br />
+					<label for="frmPublisherWikidataUri"><b>Publisher Wikidata Uri</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Wikidata Uri" id="frmPublisherWikidataUri" required>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a type="button" class="btn btn-primary" data-dismiss="modal">Close</a>
+				<a type="button" class="btn btn-success" onclick="savePublisher();">Save</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="currencyEditModal" class="modal fade" role="dialog" style="z-index: 2000;">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content" style="background: #ffffff;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" style="float: right; width:20px;margin-right: -10px;">&times;</button>
+				<h4 class="modal-title" style="margin-top: -10px;">Currency Add/Edit</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<input type="hidden" id="frmCurrencyId">
+					<label for="frmCurrencyName"><b>Currency name</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Currency Name" id="frmCurrencyName" required>
+					<br /><br />
+					<label for="frmCurrencyShortcut"><b>Currency 3 letter shortcut</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Currency Shortcut" id="frmCurrencyShortcut" required>
+					<br /><br />
+					<label for="frmCurrencyWikidataUri"><b>Currency Wikidata Uri</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Wikidata Uri" id="frmCurrencyWikidataUri" required>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a type="button" class="btn btn-primary" data-dismiss="modal">Close</a>
+				<a type="button" class="btn btn-success" onclick="saveCurrency();">Save</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="languageEditModal" class="modal fade" role="dialog" style="z-index: 2000;">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content" style="background: #ffffff;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" style="float: right; width:20px;margin-right: -10px;">&times;</button>
+				<h4 class="modal-title" style="margin-top: -10px;">Language Add/Edit</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<input type="hidden" id="frmLanguageId">
+					<label for="frmLanguageName"><b>Language name</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Language Name" id="frmLanguageName" required>
+					<br /><br />
+					<label for="frmLanguageWikidataUri"><b>Language Wikidata Uri</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Wikidata Uri" id="frmLanguageWikidataUri" required>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a type="button" class="btn btn-primary" data-dismiss="modal">Close</a>
+				<a type="button" class="btn btn-success" onclick="saveLanguage();">Save</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="bookEditModal" class="modal fade" role="dialog" style="z-index: 2000;">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content" style="background: #ffffff;">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" style="float: right; width:20px;margin-right: -10px;">&times;</button>
+				<h4 class="modal-title" style="margin-top: -10px;">Book Add/Edit</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<input type="hidden" id="frmBookId">
+					<label for="frmBookTitle"><b>Title</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Book Title" id="frmBookTitle" maxlength="120" required>
+					<br /><br />
+					<label for="frmBookAuthorId"><b>Select author</b></label><br />
+					<select style="width: 90%;" id="frmBookAuthorId" required></select>
+					<br /><br />
+					<label for="frmBookGenreId"><b>Select genre</b></label><br />
+					<select style="width: 90%;" id="frmBookGenreId" required></select>
+					<br /><br />
+					<label for="frmBookPublisherId"><b>Select publisher</b></label><br />
+					<select style="width: 90%;" id="frmBookPublisherId" required></select>
+					<br /><br />
+					<label for="frmBookLanguageId"><b>Select language</b></label><br />
+					<select style="width: 90%;" id="frmBookLanguageId" required></select>
+					<br /><br />
+					<div>
+						<div style="width: 65%; float: left">
+							<label for="frmBookISBN"><b>ISBN 13</b></label><br />
+							<input type="text" style="width: 90%;" placeholder="Enter Book ISBN 13" id="frmBookISBN" maxlength="20" required>
+						</div>
+						<div style="width: 35%; float: right">
+							<label for="frmBookPagesNo"><b>Pages #</b></label><br />
+							<input type="text" style="width: 70%;" placeholder="Pages No" id="frmBookPagesNo" maxlength="5" required>
+						</div>
+					</div>
+					<br /><br /><br />
+					<label for="frmBookImageUri"><b>Image URI</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Book Image URI" id="frmBookImageUri" maxlength="150" required>
+					<br /><br />
+					<label for="frmBookPlot"><b>Short Description</b></label><br />
+					<input type="text" style="width: 90%;" placeholder="Enter Book Short Description" id="frmBookPlot" maxlength="200" required>
+					<br /><br />
+					<div>
+						<div style="width: 45%; float: left">
+							<label for="frmBookPrice"><b>Price</b></label><br />
+							<input type="text" style="width: 90%;" placeholder="Enter Book Price" id="frmBookPrice" maxlength="6" required>
+						</div>
+						<div style="width: 45%; float: right">
+							<label for="frmBookCurrencyId"><b>Currency</b></label><br />
+							<select style="width: 90%;" id="frmBookCurrencyId" required></select>
+						</div>
+					</div>
+					<br /><br /><br />
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a type="button" class="btn btn-primary" data-dismiss="modal">Close</a>
+				<a type="button" class="btn btn-success" onclick="saveBook();">Save</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
 </body>
 </html>
 
