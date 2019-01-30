@@ -1,0 +1,317 @@
+@prefix map: <#> .
+@prefix db: <> .
+@prefix vocab: <vocab/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "com.mysql.jdbc.Driver";
+	d2rq:jdbcDSN "jdbc:mysql://192.168.10.1/phyor";
+	d2rq:username "phyor_read";
+	d2rq:password "phyor";
+	jdbc:autoReconnect "true";
+	jdbc:zeroDateTimeBehavior "convertToNull";
+	.
+
+# Table autors
+map:autors a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "autors/@@autors.id@@";
+	d2rq:class vocab:autors;
+	d2rq:classDefinitionLabel "autors";
+	.
+map:autors__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:autors;
+	d2rq:property rdfs:label;
+	d2rq:pattern "autors #@@autors.id@@";
+	.
+map:autors_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:autors;
+	d2rq:property vocab:autors_id;
+	d2rq:propertyDefinitionLabel "autors id";
+	d2rq:column "autors.id";
+	d2rq:datatype xsd:integer;
+	.
+map:autors_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:autors;
+	d2rq:property vocab:autors_name;
+	d2rq:propertyDefinitionLabel "autors name";
+	d2rq:column "autors.name";
+	.
+map:autors_sameAs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:autors;
+	d2rq:property vocab:autors_sameAs;
+	d2rq:propertyDefinitionLabel "autors sameAs";
+	d2rq:column "autors.wikidataUri";
+	.
+
+# Table books
+map:books a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "books/@@books.id@@";
+	d2rq:class vocab:books;
+	d2rq:classDefinitionLabel "books";
+	.
+map:books__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:books;
+	d2rq:property rdfs:label;
+	d2rq:pattern "books #@@books.id@@";
+	.
+map:books_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:books;
+	d2rq:property vocab:books_id;
+	d2rq:propertyDefinitionLabel "books id";
+	d2rq:column "books.id";
+	d2rq:datatype xsd:integer;
+	.
+map:books_title a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:books;
+	d2rq:property vocab:books_title;
+	d2rq:propertyDefinitionLabel "books title";
+	d2rq:column "books.title";
+	.
+map:books_isbn a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:books;
+	d2rq:property vocab:books_isbn;
+	d2rq:propertyDefinitionLabel "books isbn";
+	d2rq:column "books.isbn";
+	.
+map:books_imageUri a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:books;
+	d2rq:property vocab:books_imageUri;
+	d2rq:propertyDefinitionLabel "books imageUri";
+	d2rq:column "books.imageUri";
+	.
+map:books_plot a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:books;
+	d2rq:property vocab:books_plot;
+	d2rq:propertyDefinitionLabel "books plot";
+	d2rq:column "books.plot";
+	.
+map:books_pagesNo a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:books;
+	d2rq:property vocab:books_pagesNo;
+	d2rq:propertyDefinitionLabel "books pagesNo";
+	d2rq:column "books.pagesNo";
+	d2rq:datatype xsd:integer;
+	.
+map:books_price a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:books;
+	d2rq:property vocab:books_price;
+	d2rq:propertyDefinitionLabel "books price";
+	d2rq:column "books.price";
+	d2rq:datatype xsd:decimal;
+	.
+map:books_genreId__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:books;
+	d2rq:property vocab:books_genreId;
+	d2rq:refersToClassMap map:genres;
+	d2rq:join "books.genreId => genres.id";
+	.
+map:books_publisherId__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:books;
+	d2rq:property vocab:books_publisherId;
+	d2rq:refersToClassMap map:publishers;
+	d2rq:join "books.publisherId => publishers.id";
+	.
+map:books_autorId__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:books;
+	d2rq:property vocab:books_autorId;
+	d2rq:refersToClassMap map:autors;
+	d2rq:join "books.autorId => autors.id";
+	.
+map:books_languageId__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:books;
+	d2rq:property vocab:books_languageId;
+	d2rq:refersToClassMap map:languages;
+	d2rq:join "books.languageId => languages.id";
+	.
+map:books_currencyId__ref a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:books;
+	d2rq:property vocab:books_currencyId;
+	d2rq:refersToClassMap map:currencies;
+	d2rq:join "books.currencyId => currencies.id";
+	.
+
+# Table currencies
+map:currencies a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "currencies/@@currencies.id@@";
+	d2rq:class vocab:currencies;
+	d2rq:classDefinitionLabel "currencies";
+	.
+map:currencies__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:currencies;
+	d2rq:property rdfs:label;
+	d2rq:pattern "currencies #@@currencies.id@@";
+	.
+map:currencies_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:currencies;
+	d2rq:property vocab:currencies_id;
+	d2rq:propertyDefinitionLabel "currencies id";
+	d2rq:column "currencies.id";
+	d2rq:datatype xsd:integer;
+	.
+map:currencies_shortcut a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:currencies;
+	d2rq:property vocab:currencies_shortcut;
+	d2rq:propertyDefinitionLabel "currencies shortcut";
+	d2rq:column "currencies.shortcut";
+	.
+map:currencies_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:currencies;
+	d2rq:property vocab:currencies_name;
+	d2rq:propertyDefinitionLabel "currencies name";
+	d2rq:column "currencies.name";
+	.
+map:currencies_sameAs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:currencies;
+	d2rq:property vocab:currencies_sameAs;
+	d2rq:propertyDefinitionLabel "currencies sameAs";
+	d2rq:column "currencies.wikidataUri";
+	.
+
+# Table genres
+map:genres a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "genres/@@genres.id@@";
+	d2rq:class vocab:genres;
+	d2rq:classDefinitionLabel "genres";
+	.
+map:genres__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:genres;
+	d2rq:property rdfs:label;
+	d2rq:pattern "genres #@@genres.id@@";
+	.
+map:genres_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:genres;
+	d2rq:property vocab:genres_id;
+	d2rq:propertyDefinitionLabel "genres id";
+	d2rq:column "genres.id";
+	d2rq:datatype xsd:integer;
+	.
+map:genres_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:genres;
+	d2rq:property vocab:genres_name;
+	d2rq:propertyDefinitionLabel "genres name";
+	d2rq:column "genres.name";
+	.
+map:genres_sameAs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:genres;
+	d2rq:property vocab:genres_sameAs;
+	d2rq:propertyDefinitionLabel "genres sameAs";
+	d2rq:column "genres.wikidataUri";
+	.
+
+# Table languages
+map:languages a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "languages/@@languages.id@@";
+	d2rq:class vocab:languages;
+	d2rq:classDefinitionLabel "languages";
+	.
+map:languages__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:languages;
+	d2rq:property rdfs:label;
+	d2rq:pattern "languages #@@languages.id@@";
+	.
+map:languages_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:languages;
+	d2rq:property vocab:languages_id;
+	d2rq:propertyDefinitionLabel "languages id";
+	d2rq:column "languages.id";
+	d2rq:datatype xsd:integer;
+	.
+map:languages_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:languages;
+	d2rq:property vocab:languages_name;
+	d2rq:propertyDefinitionLabel "languages name";
+	d2rq:column "languages.name";
+	.
+map:languages_sameAs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:languages;
+	d2rq:property vocab:languages_sameAs;
+	d2rq:propertyDefinitionLabel "languages sameAs";
+	d2rq:column "languages.wikidataUri";
+	.
+
+# Table publishers
+map:publishers a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "publishers/@@publishers.id@@";
+	d2rq:class vocab:publishers;
+	d2rq:classDefinitionLabel "publishers";
+	.
+map:publishers__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:publishers;
+	d2rq:property rdfs:label;
+	d2rq:pattern "publishers #@@publishers.id@@";
+	.
+map:publishers_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:publishers;
+	d2rq:property vocab:publishers_id;
+	d2rq:propertyDefinitionLabel "publishers id";
+	d2rq:column "publishers.id";
+	d2rq:datatype xsd:integer;
+	.
+map:publishers_name a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:publishers;
+	d2rq:property vocab:publishers_name;
+	d2rq:propertyDefinitionLabel "publishers name";
+	d2rq:column "publishers.name";
+	.
+map:publishers_sameAs a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:publishers;
+	d2rq:property vocab:publishers_sameAs;
+	d2rq:propertyDefinitionLabel "publishers sameAs";
+	d2rq:column "publishers.wikidataUri";
+	.
+
+# Table users
+map:users a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "users/@@users.id@@";
+	d2rq:class vocab:users;
+	d2rq:classDefinitionLabel "users";
+	.
+map:users__label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:users;
+	d2rq:property rdfs:label;
+	d2rq:pattern "users #@@users.id@@";
+	.
+map:users_id a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:users;
+	d2rq:property vocab:users_id;
+	d2rq:propertyDefinitionLabel "users id";
+	d2rq:column "users.id";
+	d2rq:datatype xsd:integer;
+	.
+map:users_email a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:users;
+	d2rq:property vocab:users_email;
+	d2rq:propertyDefinitionLabel "users email";
+	d2rq:column "users.email";
+	.
+map:users_password a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:users;
+	d2rq:property vocab:users_password;
+	d2rq:propertyDefinitionLabel "users password";
+	d2rq:column "users.password";
+	.
+map:users_active a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:users;
+	d2rq:property vocab:users_active;
+	d2rq:propertyDefinitionLabel "users active";
+	d2rq:column "users.active";
+	d2rq:datatype xsd:integer;
+	.
+map:users_fullName a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:users;
+	d2rq:property vocab:users_fullName;
+	d2rq:propertyDefinitionLabel "users fullName";
+	d2rq:column "users.fullName";
+	.
+
